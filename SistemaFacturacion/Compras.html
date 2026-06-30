@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProFact | Compras</title>
+
+    <link rel="stylesheet" href="compras.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>ProFact</h2>
+                <img src="imagenes/Imagen1.png" alt="ProFact">
+            </div>
+
+            <nav>
+
+                <ul>
+
+                    <li>
+                        <a href="Inicio.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="compras.html">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Compras</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ventas.html">
+                            <i class="fa-solid fa-cash-register"></i>
+                            <span>Ventas</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="inventario.html">
+                            <i class="fa-solid fa-box"></i>
+                            <span>Inventario</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="reportes.html">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="usuarios.html">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-text">
+
+                    <h1>Gestión de Compras</h1>
+
+                    <p>
+                        Administra y controla las compras realizadas
+                    </p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input type="text"
+                        placeholder="Buscar compra...">
+
+                    </div>
+
+                    <div class="admin-box">
+
+                        <img src="imagenes/global-admin-icon-color-outline-vector.jpg">
+
+                        <div>
+                            <h4>Administrador</h4>
+                            <span>Admin</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <section class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon blue">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>145</h2>
+                        <p>Compras Totales</p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-icon green">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>$18,450</h2>
+                        <p>Total Gastado</p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-icon orange">
+                        <i class="fa-solid fa-truck"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>23</h2>
+                        <p>Proveedores</p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-icon red">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>12</h2>
+                        <p>Pendientes</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="content-grid">
+
+                <div class="table-section">
+
+                    <div class="table-header">
+
+                        <h2>Últimas Compras</h2>
+
+                        <button>
+                            <i class="fa-solid fa-plus"></i>
+                            Nueva Compra
+                        </button>
+
+                    </div>
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Proveedor</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>#C001</td>
+                                <td>TechSupplier</td>
+                                <td>Monitores</td>
+                                <td>15</td>
+                                <td>$3,000</td>
+                                <td>
+                                    <span class="status completed">
+                                        Recibido
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>#C002</td>
+                                <td>GamingStore</td>
+                                <td>Teclados</td>
+                                <td>25</td>
+                                <td>$1,200</td>
+                                <td>
+                                    <span class="status pending">
+                                        Pendiente
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>#C003</td>
+                                <td>ImportTech</td>
+                                <td>Mouse Gamer</td>
+                                <td>40</td>
+                                <td>$950</td>
+                                <td>
+                                    <span class="status completed">
+                                        Recibido
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="activity-section">
+
+                    <div class="activity-header">
+                        <h2>Actividad Reciente</h2>
+                    </div>
+
+                    <div class="activity">
+
+                        <div class="activity-icon blue">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </div>
+
+                        <div>
+                            <h4>Nueva Compra Registrada</h4>
+                            <p>Hace 10 minutos</p>
+                        </div>
+
+                    </div>
+
+                    <div class="activity">
+
+                        <div class="activity-icon green">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+
+                        <div>
+                            <h4>Pedido Recibido</h4>
+                            <p>Hace 25 minutos</p>
+                        </div>
+
+                    </div>
+
+                    <div class="activity">
+
+                        <div class="activity-icon orange">
+                            <i class="fa-solid fa-truck"></i>
+                        </div>
+
+                        <div>
+                            <h4>Proveedor Actualizado</h4>
+                            <p>Hace 1 hora</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
