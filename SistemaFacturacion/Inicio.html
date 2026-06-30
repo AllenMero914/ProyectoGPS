@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProFact | Inicio</title>
+
+    <link rel="stylesheet" href="inicio.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <h2>ProFact</h2>
+                <img src="imagenes/Imagen1.png" alt="ProFact">
+            </div>
+
+            <nav>
+
+                <ul>
+
+                    <li class="active">
+                        <a href="index.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="compras.html">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Compras</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ventas.html">
+                            <i class="fa-solid fa-cash-register"></i>
+                            <span>Ventas</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="inventario.html">
+                            <i class="fa-solid fa-box"></i>
+                            <span>Inventario</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="reportes.html">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="usuarios.html">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </aside>
+
+
+        <main class="main-content">
+
+
+            <header class="topbar">
+
+                <div class="topbar-text">
+
+                    <h1>Dashboard Principal</h1>
+
+                    <p>
+                        Bienvenido al sistema de gestión empresarial ProFact
+                    </p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input type="text"
+                        placeholder="Buscar...">
+
+                    </div>
+
+                    <div class="admin-box">
+
+                        <img src="imagenes/global-admin-icon-color-outline-vector.jpg">
+
+                        <div>
+                            <h4>Administrador</h4>
+                            <span>Admin</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <section class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon blue">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>$12,540</h2>
+                        <p>Ventas Totales</p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-icon green">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>356</h2>
+                        <p>Ventas Realizadas</p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-icon orange">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>120</h2>
+                        <p>Clientes</p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-icon red">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+
+                    <div class="card-info">
+                        <h2>89</h2>
+                        <p>Productos</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="content-grid">
+
+                <div class="table-section">
+
+                    <div class="table-header">
+
+                        <h2>Últimas Ventas</h2>
+
+                        <button>
+                            <i class="fa-solid fa-eye"></i>
+                            Ver Todo
+                        </button>
+
+                    </div>
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>#001</td>
+                                <td>Juan Pérez</td>
+                                <td>Laptop HP</td>
+                                <td>$850</td>
+                                <td>
+                                    <span class="status completed">
+                                        Completado
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>#002</td>
+                                <td>María López</td>
+                                <td>Mouse Gamer</td>
+                                <td>$35</td>
+                                <td>
+                                    <span class="status pending">
+                                        Pendiente
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>#003</td>
+                                <td>Carlos Ruiz</td>
+                                <td>Monitor LG</td>
+                                <td>$220</td>
+                                <td>
+                                    <span class="status completed">
+                                        Completado
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="activity-section">
+
+                    <div class="activity-header">
+                        <h2>Actividad Reciente</h2>
+                    </div>
+
+                    <div class="activity">
+
+                        <div class="activity-icon blue">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+
+                        <div>
+                            <h4>Nuevo Usuario Registrado</h4>
+                            <p>Hace 5 minutos</p>
+                        </div>
+
+                    </div>
+
+                    <div class="activity">
+
+                        <div class="activity-icon green">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </div>
+
+                        <div>
+                            <h4>Nueva Venta Realizada</h4>
+                            <p>Hace 15 minutos</p>
+                        </div>
+
+                    </div>
+
+                    <div class="activity">
+
+                        <div class="activity-icon orange">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+
+                        <div>
+                            <h4>Producto Actualizado</h4>
+                            <p>Hace 30 minutos</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
