@@ -4,7 +4,21 @@ import { Modal } from '../../../core/components/Modal';
 import { api } from '../../../core/api/api';
 import type { UsuarioDTO } from '../../../core/api/api';
 
+import { useAuth } from '../../../core/context/AuthContext';
+
 export const Usuarios: React.FC = () => {
+  const { user } = useAuth();
+
+  if (user?.rol === 'VENDEDOR') {
+    return (
+      <main className="main-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
+        <i className="fa-solid fa-lock" style={{ fontSize: '4rem', color: '#9ca3af', marginBottom: '20px' }}></i>
+        <h2 style={{ fontSize: '2rem', color: '#374151', marginBottom: '10px' }}>Acceso Restringido</h2>
+        <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>Tu rol de Vendedor no tiene permisos para acceder a este módulo.</p>
+      </main>
+    );
+  }
+
   const [usuarios, setUsuarios] = useState<UsuarioDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -105,7 +119,8 @@ export const Usuarios: React.FC = () => {
           <h2>Lista de Usuarios</h2>
           <button onClick={openNuevo}><i className="fa-solid fa-plus"></i> Nuevo Usuario</button>
         </div>
-        <table>
+        <div className="table-responsive">
+          <table>
           <thead>
             <tr>
               <th>#</th>
@@ -146,7 +161,8 @@ export const Usuarios: React.FC = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </section>
 
       <Modal open={modalOpen} title={editando ? 'Editar Usuario' : 'Nuevo Usuario'} onClose={() => setModalOpen(false)}>

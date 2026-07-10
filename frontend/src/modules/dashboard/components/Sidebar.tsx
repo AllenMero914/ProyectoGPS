@@ -7,10 +7,9 @@ import logoProFact from '../../../assets/images/logoProFact.png';
 export const Sidebar: React.FC = () => {
   const location = useLocation();
   const { user, logout } = useAuth();
+  const esVendedor = user?.rol === 'VENDEDOR';
   const navigate = useNavigate();
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-  
-  const esVendedor = user?.rol === 'VENDEDOR';
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -29,17 +28,18 @@ export const Sidebar: React.FC = () => {
   return (
     <aside className="sidebar">
       <div className="logo">
-        <h2>ProFact</h2>
         <img src={logoProFact} alt="ProFact Logo" style={{ maxWidth: '100%', height: 'auto' }} />
       </div>
       <nav>
         <ul>
-          <li className={isActive('/dashboard') ? 'active' : ''}>
-            <Link to="/dashboard">
-              <i className="fa-solid fa-house"></i>
-              <span>Inicio</span>
-            </Link>
-          </li>
+          {!esVendedor && (
+            <li className={isActive('/dashboard') ? 'active' : ''}>
+              <Link to="/dashboard">
+                <i className="fa-solid fa-house"></i>
+                <span>Inicio</span>
+              </Link>
+            </li>
+          )}
           {!esVendedor && (
             <li className={isActive('/dashboard/compras') ? 'active' : ''}>
               <Link to="/dashboard/compras">
@@ -87,6 +87,14 @@ export const Sidebar: React.FC = () => {
               <Link to="/dashboard/proveedores">
                 <i className="fa-solid fa-truck"></i>
                 <span>Proveedores</span>
+              </Link>
+            </li>
+          )}
+          {!esVendedor && (
+            <li className={isActive('/dashboard/configuracion') ? 'active' : ''}>
+              <Link to="/dashboard/configuracion">
+                <i className="fa-solid fa-gear"></i>
+                <span>Configuración</span>
               </Link>
             </li>
           )}

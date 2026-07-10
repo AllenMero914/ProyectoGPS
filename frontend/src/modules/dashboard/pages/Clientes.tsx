@@ -97,7 +97,8 @@ export const Clientes: React.FC = () => {
           <h2>Lista de Clientes</h2>
           <button onClick={openNuevo}><i className="fa-solid fa-plus"></i> Nuevo Cliente</button>
         </div>
-        <table>
+        <div className="table-responsive">
+          <table>
           <thead>
             <tr>
               <th>ID</th>
@@ -133,7 +134,8 @@ export const Clientes: React.FC = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </section>
 
       <Modal open={modalOpen} title={editando ? 'Editar Cliente' : 'Nuevo Cliente'} onClose={() => setModalOpen(false)}>

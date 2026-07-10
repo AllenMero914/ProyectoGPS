@@ -3,12 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { Topbar } from '../components/Topbar';
 import { api } from '../../../core/api/api';
 import type { DashboardMetricas, VentaDTO } from '../../../core/api/api';
+import { useAuth } from '../../../core/context/AuthContext';
 
 export const InicioDashboard: React.FC = () => {
+  const { user } = useAuth();
   const [metricas, setMetricas] = useState<DashboardMetricas | null>(null);
   const [ventas, setVentas] = useState<VentaDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.rol === 'VENDEDOR') {
+      navigate('/dashboard/ventas', { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (user?.rol === 'VENDEDOR') return null;
 
   const loadData = async () => {
     try {
@@ -86,7 +96,8 @@ export const InicioDashboard: React.FC = () => {
               <i className="fa-solid fa-eye"></i> Ver Todo
             </button>
           </div>
-          <table>
+          <div className="table-responsive">
+            <table>
             <thead>
               <tr>
                 <th>#</th>
@@ -111,7 +122,8 @@ export const InicioDashboard: React.FC = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
 
         <div className="activity-section">

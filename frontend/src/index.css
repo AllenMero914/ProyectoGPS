@@ -36,7 +36,7 @@ img{
 }
 
 .container{
-    width:min(1200px,90%);
+    width:min(1400px,90%);
     margin:auto;
 }
 
@@ -767,5 +767,31 @@ footer{
 
     100%{
         transform:translateY(0px);
+    }
+}
+
+@media(min-width: 1920px){
+    .container {
+        width: min(1600px, 90%);
+    }
+
+    .hero-text h1 {
+        font-size: 5rem;
+    }
+
+    .hero-text p {
+        font-size: 1.3rem;
+    }
+
+    .section-title h2 {
+        font-size: 3.5rem;
+    }
+
+    .login-box h1 {
+        font-size: 60px;
+    }
+
+    .overlay h2 {
+        font-size: 85px;
     }
 }

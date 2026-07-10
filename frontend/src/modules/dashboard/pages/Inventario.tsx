@@ -158,7 +158,8 @@ export const Inventario: React.FC = () => {
           <h2>Lista de Productos</h2>
           {!esVendedor && <button onClick={openNuevo}><i className="fa-solid fa-plus"></i> Nuevo Producto</button>}
         </div>
-        <table>
+        <div className="table-responsive">
+          <table>
           <thead>
             <tr>
               <th>#</th>
@@ -202,7 +203,8 @@ export const Inventario: React.FC = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </section>
 
       <Modal open={modalOpen} title={editando ? 'Editar Producto' : 'Nuevo Producto'} onClose={() => setModalOpen(false)}>

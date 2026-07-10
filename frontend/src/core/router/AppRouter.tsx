@@ -19,6 +19,7 @@ import { Reportes } from '../../modules/dashboard/pages/Reportes';
 import { Usuarios } from '../../modules/dashboard/pages/Usuarios';
 import { Clientes } from '../../modules/dashboard/pages/Clientes';
 import { Proveedores } from '../../modules/dashboard/pages/Proveedores';
+import { Configuracion } from '../../modules/dashboard/pages/Configuracion';
 
 export const AppRouter: React.FC = () => {
   return (
@@ -44,6 +45,7 @@ export const AppRouter: React.FC = () => {
         <Route path="usuarios" element={<Usuarios />} />
         <Route path="clientes" element={<Clientes />} />
         <Route path="proveedores" element={<Proveedores />} />
+        <Route path="configuracion" element={<Configuracion />} />
       </Route>
 
       {/* Redirección por defecto */}
