@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+    <title>Ingresar | ProFact</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<section class="login-section">
+    <div class="login-left">
+        <div class="login-box">
+            <img
+            src="Images/logoProfact.png"
+            alt="ProFact"
+            class="login-logo">
+            <h1>Bienvenido</h1>
+            <p class="login-text">
+                Ingresa a tu cuenta para administrar
+                tu empresa de manera inteligente.
+            </p>
+            <form onsubmit="return validarLogin()">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                    type="text"
+                    id="usuario"
+                    placeholder="Usuario"
+                    required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input
+                    type="password"
+                    id="password"
+                    placeholder="Contraseña"
+                    required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="login-right">
+    </div>
+</section>
+<script>
+function validarLogin(){
+    let user =
+    document.getElementById("usuario").value;
+    let pass =
+    document.getElementById("password").value;
+    if(user === "root" && pass === "12345"){
+        window.location.href =
+        "SistemaFacturacion/inicio.html";
+        return false;
+    }else{
+        alert("Usuario o contraseña incorrectos");
+        return false;
+    }
+}
+</script>
+</body>
+</html>

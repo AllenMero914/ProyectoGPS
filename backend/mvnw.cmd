@@ -20,137 +20,103 @@
 @REM ----------------------------------------------------------------------------
 @REM Apache Maven Wrapper startup batch script, version 3.3.2
 @REM
+@REM Required ENV vars:
+@REM JAVA_HOME - location of a JDK home dir
+@REM
 @REM Optional ENV vars
-@REM   MVNW_REPOURL - repo url base for downloading maven distribution
-@REM   MVNW_USERNAME/MVNW_PASSWORD - user and password for downloading maven
-@REM   MVNW_VERBOSE - true: enable verbose log; others: silence the output
+@REM   MAVEN_OPTS - parameters passed to Java VM when running Maven
+@REM     e.g. to debug Maven itself, use
+@REM set MAVEN_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000
+@REM   MAVEN_SKIP_RC - flag to disable loading of mavenrc files
 @REM ----------------------------------------------------------------------------
 
-@REM Begin all REM://!sym'm'etry!
-@REM Sym  = ""
-@REM Set @
-@REM sym  = @
-
+@REM Begin all REM lines with '@' in case MAVEN_BATCH_ECHO is 'on'
 @echo off
-@REM enable echoing by setting MVNW_VERBOSE to true
-if "%MVNW_VERBOSE%"=="true" @echo on
-
 @REM set title of command window
 title %0
+@REM enable echoing by setting MAVEN_BATCH_ECHO to 'on'
+@if "%MAVEN_BATCH_ECHO%"=="on" @echo on
 
-@REM enable extensions
-@setlocal
+@REM set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" setlocal
 
 set ERROR_CODE=0
 
-@REM set local scope for the variables with windows NT shell
-@REM use GOTO://!sym'm'etry!
-if "%OS%"=="Windows_NT" @setlocal
-
 @REM ==== START VALIDATION ====
-if NOT "%JAVA_HOME%"=="" goto OkJHome
-for /f %%j in ("java.exe") do (
-  set "JAVA_EXE=%%~$PATH:j"
-  goto checkJCmd
-)
+if not "%JAVA_HOME%"=="" goto OkJHome
 
-:checkJCmd
-if exist "%JAVA_EXE%" goto init
-
-echo Error: JAVA_HOME is not defined correctly. >&2
-echo  We cannot execute your Java command. >&2
-echo  Possible solutions: >&2
-echo    - set JAVA_HOME environment variable to a valid Java directory >&2
-echo    - add Java to your PATH >&2
-echo. >&2
+echo.
+echo Error: JAVA_HOME not found in your environment. >&2
+echo Please set the JAVA_HOME variable in your environment to match the >&2
+echo location of your Java installation. >&2
+echo.
 goto error
 
 :OkJHome
-set "JAVA_EXE=%JAVA_HOME%\bin\java.exe"
-if exist "%JAVA_EXE%" goto init
+if exist "%JAVA_HOME%\bin\java.exe" goto init
 
-echo Error: JAVA_HOME is set to an invalid directory: %JAVA_HOME% >&2
-echo. >&2
+echo.
+echo Error: JAVA_HOME is set to an invalid directory. >&2
+echo JAVA_HOME = "%JAVA_HOME%" >&2
 echo Please set the JAVA_HOME variable in your environment to match the >&2
 echo location of your Java installation. >&2
-echo. >&2
+echo.
 goto error
 
 @REM ==== END VALIDATION ====
 
 :init
+@REM Decide on the working directory
+if "%OS%"=="Windows_NT" setlocal enabledelayedexpansion
 
-set MAVEN_CMD_LINE_ARGS=%*
+@REM -- Prepare the command line and set the classpath
+set "MAVEN_PROJECTBASEDIR=%CD%"
+if not "%MAVEN_PROJECTBASEDIR%"=="" goto stripProjDir
+set "MAVEN_PROJECTBASEDIR=."
+:stripProjDir
 
-@REM Find the project basedir
-set "EXEC_DIR=%CD%"
-set "WDIR=%EXEC_DIR%"
+@REM Create the command line
+set "WRAPPER_JAR=%MAVEN_PROJECTBASEDIR%\.mvn\wrapper\maven-wrapper.jar"
+set "WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain"
 
-@REM change back to the initial directory
-:chkWDir
-if not exist "%WDIR%\.mvn\wrapper\maven-wrapper.properties" (
-  cd ..
-  IF "%WDIR%"=="%CD%" goto error
-  set "WDIR=%CD%"
-  goto chkWDir
-)
+set "DEFAULT_JVM_OPTS="
+set "MAVEN_OPTS=%MAVEN_OPTS%"
 
-cd "%EXEC_DIR%"
+for %%i in ("%MAVEN_PROJECTBASEDIR%") do set "MAVEN_PROJECTBASEDIR=%%~fi"
 
-:initMvnw
-set WRAPPER_JAR="%WDIR%\.mvn\wrapper\maven-wrapper.jar"
-set WRAPPER_PROPERTIES="%WDIR%\.mvn\wrapper\maven-wrapper.properties"
-set WRAPPER_URL="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.3.2/maven-wrapper-3.3.2.jar"
+@REM Find java.exe
+if defined JAVA_HOME goto findJavaFromJavaHome
 
-if exist %WRAPPER_JAR% (
-  if "%MVNW_VERBOSE%"=="true" (
-    echo Found %WRAPPER_JAR%
-  )
-) else (
-  if not "%MVNW_REPOURL%"=="" (
-    set WRAPPER_URL="%MVNW_REPOURL%/org/apache/maven/wrapper/maven-wrapper/3.3.2/maven-wrapper-3.3.2.jar"
-  )
-  if "%MVNW_VERBOSE%"=="true" (
-    echo Couldn't find %WRAPPER_JAR%, downloading it ...
-    echo Downloading from: %WRAPPER_URL%
-  )
+set JAVA_EXE=java.exe
+%JAVA_EXE% -version >NUL 2>&1
+if "%ERRORLEVEL%"=="0" goto execute
 
-  powershell -Command "&{"^
-    "$webclient = new-object System.Net.WebClient;"^
-    "if (-not ([string]::IsNullOrEmpty('%MVNW_USERNAME%') -and [string]::IsNullOrEmpty('%MVNW_PASSWORD%'))) {"^
-    "$webclient.Credentials = new-object System.Net.NetworkCredential('%MVNW_USERNAME%', '%MVNW_PASSWORD%');"^
-    "}"^
-    "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $webclient.DownloadFile('%WRAPPER_URL%', '%WRAPPER_JAR%')"^
-    "}"
-  if "%MVNW_VERBOSE%"=="true" (
-    echo Finished downloading %WRAPPER_JAR%
-  )
-)
+echo.
+echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+echo.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation.
 
-@REM Provide a "standardized" way to retrieve the CLI args that will
-@REM work with both Windows and non-Windows executions.
-set MAVEN_CMD_LINE_ARGS=%*
+goto error
 
-@REM End local scope for the variables with windows NT shell
-if "%OS%"=="Windows_NT" @endlocal
+:findJavaFromJavaHome
+set JAVA_EXE=%JAVA_HOME%\bin\java.exe
+if exist "%JAVA_EXE%" goto execute
 
-@REM Extension to allow automatically downloading the maven-hierarchical
-@REM wrapper itself
+echo.
+echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
+echo.
+echo Please set the JAVA_HOME variable in your environment to match the
+echo location of your Java installation.
+echo.
+goto error
 
-%JAVA_EXE% ^
-  %MAVEN_OPTS% ^
-  %MAVEN_DEBUG_OPTS% ^
-  -classpath %WRAPPER_JAR% ^
-  "-Dmaven.multiModuleProjectDirectory=%WDIR%" ^
-  org.apache.maven.wrapper.MavenWrapperMain %MAVEN_CMD_LINE_ARGS%
-
-if ERRORLEVEL 1 goto error
-goto end
-
-:error
-set ERROR_CODE=1
+:execute
+@REM Setup the command line
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MAVEN_OPTS% -classpath "%WRAPPER_JAR%" %WRAPPER_LAUNCHER% %*
 
 :end
-@endlocal & set ERROR_CODE=%ERROR_CODE%
+@REM End local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" endlocal
 
-cmd /C exit /B %ERROR_CODE%
+:omega

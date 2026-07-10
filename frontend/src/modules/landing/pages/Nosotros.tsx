@@ -4,7 +4,7 @@ import equipoImg from '../../../assets/images/equipo.png';
 export const Nosotros: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Mensaje enviado (Simulación)');
+    window.confirm('¿Enviar mensaje de contacto?') && alert('Mensaje enviado correctamente');
   };
 
   return (

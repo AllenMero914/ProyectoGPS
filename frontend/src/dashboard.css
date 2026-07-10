@@ -410,3 +410,153 @@ td{
     background: #fee2e2;
     color: #991b1b;
 }
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    color: #111827;
+    font-size: 24px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0 8px;
+}
+
+.modal-close:hover {
+    color: #111827;
+}
+
+.modal-body .form-group {
+    margin-bottom: 18px;
+}
+
+.modal-body label {
+    display: block;
+    margin-bottom: 6px;
+    color: #374151;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.modal-body input,
+.modal-body select,
+.modal-body textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.modal-body input:focus,
+.modal-body select:focus,
+.modal-body textarea:focus {
+    border-color: #4f46e5;
+}
+
+.modal-body textarea {
+    resize: vertical;
+    min-height: 70px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+.form-actions button {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-actions .btn-cancel {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.form-actions .btn-cancel:hover {
+    background: #d1d5db;
+}
+
+.form-actions .btn-submit {
+    background: #4f46e5;
+    color: white;
+}
+
+.form-actions .btn-submit:hover {
+    background: #4338ca;
+}
+
+.form-actions .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.btn-icon:hover {
+    background: #eef2ff;
+}
+
+.btn-icon.edit { color: #4f46e5; }
+.btn-icon.delete { color: #ef4444; }
+.btn-icon.toggle { color: #10b981; }
+
+.loading-cell {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.table-section.compact table th,
+.table-section.compact table td {
+    padding: 12px 14px;
+}

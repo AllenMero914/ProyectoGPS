@@ -40,12 +40,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario, contrasenia }),
+        body: JSON.stringify({ email: usuario, contrasena: contrasenia }),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.ok) {
+        const data = await response.json();
         const userData: UserData = {
           nombre: data.nombre,
           rol: data.rol,
@@ -60,7 +59,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return false;
     } catch {
-      // Fallback local: si el backend no está disponible, validar localmente
       console.warn('Backend no disponible. Usando autenticación local (fallback).');
       if (usuario === 'root' && contrasenia === '12345') {
         const userData: UserData = { nombre: 'Administrador', rol: 'ADMIN' };

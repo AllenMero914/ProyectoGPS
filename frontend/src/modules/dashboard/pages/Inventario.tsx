@@ -1,52 +1,130 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Topbar } from '../components/Topbar';
+import { Modal } from '../../../core/components/Modal';
+import { api } from '../../../core/api/api';
+import type { ProductoDTO, CategoriaDTO } from '../../../core/api/api';
 
 export const Inventario: React.FC = () => {
+  const [productos, setProductos] = useState<ProductoDTO[]>([]);
+  const [categorias, setCategorias] = useState<CategoriaDTO[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editando, setEditando] = useState<ProductoDTO | null>(null);
+  const [form, setForm] = useState({ nombre: '', descripcion: '', precio: '', stock: '', stockMinimo: '', categoriaId: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const load = async () => {
+    try {
+      const [p, c] = await Promise.all([
+        api.get<ProductoDTO[]>('/productos'),
+        api.get<CategoriaDTO[]>('/categorias?todas=true'),
+      ]);
+      setProductos(p);
+      setCategorias(c);
+    } catch { /* ignore */ }
+    finally { setLoading(false); }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const openNuevo = () => {
+    setEditando(null);
+    setForm({ nombre: '', descripcion: '', precio: '', stock: '', stockMinimo: '', categoriaId: '' });
+    setModalOpen(true);
+  };
+
+  const openEditar = (p: ProductoDTO) => {
+    setEditando(p);
+    setForm({
+      nombre: p.nombre,
+      descripcion: p.descripcion,
+      precio: String(p.precio),
+      stock: String(p.stock),
+      stockMinimo: String(p.stockMinimo),
+      categoriaId: String(p.categoriaId),
+    });
+    setModalOpen(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const body = {
+        nombre: form.nombre,
+        descripcion: form.descripcion,
+        precio: parseFloat(form.precio),
+        stock: parseInt(form.stock),
+        stockMinimo: parseInt(form.stockMinimo),
+        categoriaId: parseInt(form.categoriaId),
+      };
+      if (editando) {
+        await api.put(`/productos/${editando.id}`, body);
+      } else {
+        await api.post('/productos', body);
+      }
+      setModalOpen(false);
+      await load();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error al guardar');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const eliminar = async (id: number) => {
+    if (!window.confirm('¿Eliminar este producto?')) return;
+    try {
+      await api.del(`/productos/${id}`);
+      await load();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error al eliminar');
+    }
+  };
+
+  const filtrados = productos.filter(p =>
+    !search || p.nombre.toLowerCase().includes(search.toLowerCase())
+  );
+  const enStock = productos.filter(p => p.stock > p.stockMinimo).length;
+  const bajoStock = productos.filter(p => p.stock <= p.stockMinimo && p.stock > 0).length;
+  const sinStock = productos.filter(p => p.stock === 0).length;
+
   return (
     <main className="main-content">
       <Topbar
         title="Inventario de Productos"
         subtitle="Gestiona y controla tus productos en tiempo real"
         searchPlaceholder="Buscar producto..."
+        onSearch={setSearch}
       />
 
       <section className="cards">
         <div className="card">
-          <div className="card-icon blue">
-            <i className="fa-solid fa-boxes-stacked"></i>
-          </div>
+          <div className="card-icon blue"><i className="fa-solid fa-boxes-stacked"></i></div>
           <div className="card-info">
-            <h2>256</h2>
+            <h2>{productos.length}</h2>
             <p>Total Productos</p>
           </div>
         </div>
-
         <div className="card">
-          <div className="card-icon green">
-            <i className="fa-solid fa-layer-group"></i>
-          </div>
+          <div className="card-icon green"><i className="fa-solid fa-layer-group"></i></div>
           <div className="card-info">
-            <h2>198</h2>
+            <h2>{enStock}</h2>
             <p>En Stock</p>
           </div>
         </div>
-
         <div className="card">
-          <div className="card-icon orange">
-            <i className="fa-solid fa-triangle-exclamation"></i>
-          </div>
+          <div className="card-icon orange"><i className="fa-solid fa-triangle-exclamation"></i></div>
           <div className="card-info">
-            <h2>24</h2>
+            <h2>{bajoStock}</h2>
             <p>Bajo Stock</p>
           </div>
         </div>
-
         <div className="card">
-          <div className="card-icon red">
-            <i className="fa-solid fa-circle-xmark"></i>
-          </div>
+          <div className="card-icon red"><i className="fa-solid fa-circle-xmark"></i></div>
           <div className="card-info">
-            <h2>34</h2>
+            <h2>{sinStock}</h2>
             <p>Sin Stock</p>
           </div>
         </div>
@@ -55,66 +133,90 @@ export const Inventario: React.FC = () => {
       <section className="table-section">
         <div className="table-header">
           <h2>Lista de Productos</h2>
-          <button onClick={() => alert('Nuevo Producto clicked')}>
-            <i className="fa-solid fa-plus"></i> Nuevo Producto
-          </button>
+          <button onClick={openNuevo}><i className="fa-solid fa-plus"></i> Nuevo Producto</button>
         </div>
-
         <table>
           <thead>
             <tr>
-              <th>Código</th>
+              <th>#</th>
               <th>Producto</th>
               <th>Categoría</th>
               <th>Precio</th>
               <th>Stock</th>
+              <th>Stock Mín</th>
               <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>P001</td>
-              <td>Lámpara LED</td>
-              <td>Iluminación</td>
-              <td>$15</td>
-              <td>45</td>
-              <td>
-                <span className="status available">Disponible</span>
-              </td>
-            </tr>
-            <tr>
-              <td>P002</td>
-              <td>Mouse Gamer</td>
-              <td>Gaming</td>
-              <td>$35</td>
-              <td>10</td>
-              <td>
-                <span className="status warning">Bajo Stock</span>
-              </td>
-            </tr>
-            <tr>
-              <td>P003</td>
-              <td>Teclado Mecánico</td>
-              <td>Accesorios</td>
-              <td>$60</td>
-              <td>0</td>
-              <td>
-                <span className="status danger">Sin Stock</span>
-              </td>
-            </tr>
-            <tr>
-              <td>P004</td>
-              <td>Monitor LG</td>
-              <td>Pantallas</td>
-              <td>$220</td>
-              <td>18</td>
-              <td>
-                <span className="status available">Disponible</span>
-              </td>
-            </tr>
+            {loading ? (
+              <tr><td colSpan={8} className="loading-cell">Cargando...</td></tr>
+            ) : filtrados.length === 0 ? (
+              <tr><td colSpan={8} className="loading-cell">No hay productos</td></tr>
+            ) : filtrados.map(p => (
+              <tr key={p.id}>
+                <td>{p.id}</td>
+                <td>{p.nombre}</td>
+                <td>{p.categoriaNombre}</td>
+                <td>${p.precio.toFixed(2)}</td>
+                <td>{p.stock}</td>
+                <td>{p.stockMinimo}</td>
+                <td>
+                  {p.stock === 0 ? <span className="status danger">Sin Stock</span> :
+                   p.stockBajo ? <span className="status warning">Bajo Stock</span> :
+                   <span className="status available">Disponible</span>}
+                </td>
+                <td>
+                  <button className="btn-icon edit" onClick={() => openEditar(p)} title="Editar">
+                    <i className="fa-solid fa-pen"></i>
+                  </button>
+                  <button className="btn-icon delete" onClick={() => eliminar(p.id)} title="Eliminar">
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </section>
+
+      <Modal open={modalOpen} title={editando ? 'Editar Producto' : 'Nuevo Producto'} onClose={() => setModalOpen(false)}>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Nombre</label>
+            <input required value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} />
+          </div>
+          <div className="form-group">
+            <label>Descripción</label>
+            <textarea value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} />
+          </div>
+          <div className="form-group">
+            <label>Categoría</label>
+            <select required value={form.categoriaId} onChange={e => setForm({ ...form, categoriaId: e.target.value })}>
+              <option value="">Seleccionar...</option>
+              {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Precio ($)</label>
+            <input type="number" step="0.01" min="0.01" required value={form.precio} onChange={e => setForm({ ...form, precio: e.target.value })} />
+          </div>
+          <div className="form-group">
+            <label>Stock</label>
+            <input type="number" min="0" required value={form.stock} onChange={e => setForm({ ...form, stock: e.target.value })} />
+          </div>
+          <div className="form-group">
+            <label>Stock Mínimo</label>
+            <input type="number" min="0" required value={form.stockMinimo} onChange={e => setForm({ ...form, stockMinimo: e.target.value })} />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancelar</button>
+            <button type="submit" className="btn-submit" disabled={submitting}>
+              {submitting ? 'Guardando...' : editando ? 'Actualizar' : 'Crear'}
+            </button>
+          </div>
+        </form>
+      </Modal>
     </main>
   );
 };

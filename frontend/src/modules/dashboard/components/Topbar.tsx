@@ -7,12 +7,14 @@ interface TopbarProps {
   title: string;
   subtitle: string;
   searchPlaceholder?: string;
+  onSearch?: (value: string) => void;
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
   title,
   subtitle,
   searchPlaceholder = 'Buscar...',
+  onSearch,
 }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ export const Topbar: React.FC<TopbarProps> = ({
       <div className="topbar-right">
         <div className="search-box">
           <i className="fa-solid fa-magnifying-glass"></i>
-          <input type="text" placeholder={searchPlaceholder} />
+          <input type="text" placeholder={searchPlaceholder} onChange={e => onSearch?.(e.target.value)} />
         </div>
         <div className="admin-box" onClick={handleLogout} style={{ cursor: 'pointer' }} title="Haga clic para cerrar sesión">
           <img src={adminAvatar} alt="Administrador" />

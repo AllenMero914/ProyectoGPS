@@ -22,7 +22,7 @@ export const Planes: React.FC = () => {
               <div className="plan-image">
                 <img src={planBasicoImg} alt="Plan Básico" />
               </div>
-              <a href="#" className="btn-primary" onClick={(e) => { e.preventDefault(); alert('Plan Básico Seleccionado'); }}>
+              <a href="/sesion" className="btn-primary">
                 Adquirir Plan
               </a>
             </div>
@@ -37,7 +37,7 @@ export const Planes: React.FC = () => {
               <div className="plan-image">
                 <img src={planNegocioImg} alt="Plan Negocio" />
               </div>
-              <a href="#" className="btn-primary" onClick={(e) => { e.preventDefault(); alert('Plan Negocio Seleccionado'); }}>
+              <a href="/sesion" className="btn-primary">
                 Adquirir Plan
               </a>
             </div>
