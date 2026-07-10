@@ -17,6 +17,8 @@ import { Ventas } from '../../modules/dashboard/pages/Ventas';
 import { Inventario } from '../../modules/dashboard/pages/Inventario';
 import { Reportes } from '../../modules/dashboard/pages/Reportes';
 import { Usuarios } from '../../modules/dashboard/pages/Usuarios';
+import { Clientes } from '../../modules/dashboard/pages/Clientes';
+import { Proveedores } from '../../modules/dashboard/pages/Proveedores';
 
 export const AppRouter: React.FC = () => {
   return (
@@ -40,6 +42,8 @@ export const AppRouter: React.FC = () => {
         <Route path="inventario" element={<Inventario />} />
         <Route path="reportes" element={<Reportes />} />
         <Route path="usuarios" element={<Usuarios />} />
+        <Route path="clientes" element={<Clientes />} />
+        <Route path="proveedores" element={<Proveedores />} />
       </Route>
 
       {/* Redirección por defecto */}

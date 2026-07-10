@@ -2,9 +2,11 @@ package com.binasystem.profact.service;
 
 import com.binasystem.profact.dto.DetalleVentaDTO;
 import com.binasystem.profact.dto.VentaRequestDTO;
+import com.binasystem.profact.entity.Cliente;
 import com.binasystem.profact.entity.Producto;
 import com.binasystem.profact.entity.Usuario;
 import com.binasystem.profact.entity.Venta;
+import com.binasystem.profact.repository.ClienteRepository;
 import com.binasystem.profact.exception.StockInsuficienteException;
 import com.binasystem.profact.repository.ProductoRepository;
 import com.binasystem.profact.repository.UsuarioRepository;
@@ -30,15 +32,21 @@ class VentaServiceTest {
     @Mock private VentaRepository ventaRepository;
     @Mock private ProductoRepository productoRepository;
     @Mock private UsuarioRepository usuarioRepository;
+    @Mock private ClienteRepository clienteRepository;
     @InjectMocks private VentaService ventaService;
 
     private Usuario vendedor;
+    private Cliente cliente;
 
     @BeforeEach
     void setUp() {
         vendedor = new Usuario();
         vendedor.setId(1L);
         vendedor.setNombre("Vendedor");
+
+        cliente = new Cliente();
+        cliente.setId(1L);
+        cliente.setNombre("Cliente Genérico");
     }
 
     @Test
@@ -49,10 +57,12 @@ class VentaServiceTest {
         p1.setStock(15);
 
         VentaRequestDTO dto = new VentaRequestDTO(
+            1L,
             List.of(new DetalleVentaDTO(1L, 3))
         );
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(vendedor));
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
         when(productoRepository.findById(1L)).thenReturn(Optional.of(p1));
         Venta ventaGuardada = new Venta();
         ventaGuardada.setId(1L);
@@ -74,10 +84,12 @@ class VentaServiceTest {
         p1.setStock(2);
 
         VentaRequestDTO dto = new VentaRequestDTO(
+            1L,
             List.of(new DetalleVentaDTO(1L, 5))
         );
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(vendedor));
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
         when(productoRepository.findById(1L)).thenReturn(Optional.of(p1));
 
         StockInsuficienteException ex = assertThrows(
@@ -95,12 +107,13 @@ class VentaServiceTest {
         Producto p2 = new Producto();
         p2.setId(2L); p2.setPrecio(new BigDecimal("25.50")); p2.setStock(20);
 
-        VentaRequestDTO dto = new VentaRequestDTO(List.of(
+        VentaRequestDTO dto = new VentaRequestDTO(1L, List.of(
             new DetalleVentaDTO(1L, 3),
             new DetalleVentaDTO(2L, 2)
         ));
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(vendedor));
+        when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
         when(productoRepository.findById(1L)).thenReturn(Optional.of(p1));
         when(productoRepository.findById(2L)).thenReturn(Optional.of(p2));
         when(ventaRepository.save(any())).thenReturn(new Venta());

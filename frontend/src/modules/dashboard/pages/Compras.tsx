@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Topbar } from '../components/Topbar';
 import { Modal } from '../../../core/components/Modal';
 import { api } from '../../../core/api/api';
-import type { CompraDTO, ProveedorDTO, ProductoDTO } from '../../../core/api/api';
+import type { CompraDTO, ProveedorDTO, ProductoDTO, CategoriaDTO } from '../../../core/api/api';
 
 export const Compras: React.FC = () => {
   const [compras, setCompras] = useState<CompraDTO[]>([]);
@@ -10,22 +10,39 @@ export const Compras: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [proveedores, setProveedores] = useState<ProveedorDTO[]>([]);
   const [productos, setProductos] = useState<ProductoDTO[]>([]);
+  const [categorias, setCategorias] = useState<CategoriaDTO[]>([]);
+  
   const [proveedorId, setProveedorId] = useState('');
   const [detalles, setDetalles] = useState<{ productoId: string; cantidad: string; precio: string }[]>([
     { productoId: '', cantidad: '1', precio: '' },
   ]);
   const [submitting, setSubmitting] = useState(false);
 
+  // Modales adicionales
+  const [nuevoProveedorModal, setNuevoProveedorModal] = useState(false);
+  const [formProveedor, setFormProveedor] = useState({ nombre: '', email: '', telefono: '', direccion: '' });
+  const [submittingProveedor, setSubmittingProveedor] = useState(false);
+
+  const [nuevaCategoriaModal, setNuevaCategoriaModal] = useState(false);
+  const [nuevaCategoriaNombre, setNuevaCategoriaNombre] = useState('');
+  const [submittingCategoria, setSubmittingCategoria] = useState(false);
+
+  const [nuevoProductoModal, setNuevoProductoModal] = useState(false);
+  const [formProducto, setFormProducto] = useState({ nombre: '', descripcion: '', precio: '', stock: '0', stockMinimo: '5', categoriaId: '' });
+  const [submittingProducto, setSubmittingProducto] = useState(false);
+
   const load = async () => {
     try {
-      const [c, pv, pr] = await Promise.all([
+      const [c, pv, pr, cat] = await Promise.all([
         api.get<CompraDTO[]>('/compras'),
         api.get<ProveedorDTO[]>('/proveedores'),
         api.get<ProductoDTO[]>('/productos'),
+        api.get<CategoriaDTO[]>('/categorias?todas=true'),
       ]);
       setCompras(c);
       setProveedores(pv);
       setProductos(pr.filter(p => p.activo));
+      setCategorias(cat);
     } catch { /* ignore */ }
     finally { setLoading(false); }
   };
@@ -75,6 +92,59 @@ export const Compras: React.FC = () => {
       alert(err instanceof Error ? err.message : 'Error al registrar compra');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const crearProveedor = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingProveedor(true);
+    try {
+      await api.post('/proveedores', formProveedor);
+      setNuevoProveedorModal(false);
+      setFormProveedor({ nombre: '', email: '', telefono: '', direccion: '' });
+      await load();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error al crear proveedor');
+    } finally {
+      setSubmittingProveedor(false);
+    }
+  };
+
+  const crearCategoria = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingCategoria(true);
+    try {
+      await api.post('/categorias', { nombre: nuevaCategoriaNombre, descripcion: '' });
+      setNuevaCategoriaModal(false);
+      setNuevaCategoriaNombre('');
+      await load();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error al crear categoría');
+    } finally {
+      setSubmittingCategoria(false);
+    }
+  };
+
+  const crearProducto = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingProducto(true);
+    try {
+      const body = {
+        nombre: formProducto.nombre,
+        descripcion: formProducto.descripcion,
+        precio: parseFloat(formProducto.precio),
+        stock: parseInt(formProducto.stock),
+        stockMinimo: parseInt(formProducto.stockMinimo),
+        categoriaId: parseInt(formProducto.categoriaId),
+      };
+      await api.post('/productos', body);
+      setNuevoProductoModal(false);
+      setFormProducto({ nombre: '', descripcion: '', precio: '', stock: '0', stockMinimo: '5', categoriaId: '' });
+      await load();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error al crear producto');
+    } finally {
+      setSubmittingProducto(false);
     }
   };
 
@@ -137,17 +207,34 @@ export const Compras: React.FC = () => {
       <Modal open={modalOpen} title="Nueva Compra" onClose={() => setModalOpen(false)}>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Proveedor</label>
+            <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+              Proveedor
+              <button type="button" onClick={() => setNuevoProveedorModal(true)} style={{ background: 'none', border: 'none', color: '#4f46e5', cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
+                + Nuevo Proveedor
+              </button>
+            </label>
             <select required value={proveedorId} onChange={e => setProveedorId(e.target.value)}>
               <option value="">Seleccionar...</option>
               {proveedores.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
             </select>
           </div>
+          
+          <div style={{ marginBottom: '15px' }}>
+            <button type="button" onClick={() => setNuevaCategoriaModal(true)} style={{ color: '#4f46e5', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9em' }}>
+              <i className="fa-solid fa-folder-plus"></i> Crear nueva categoría de productos
+            </button>
+          </div>
+
           <h4 style={{ margin: '15px 0 10px', color: '#374151' }}>Detalles de Compra</h4>
           {detalles.map((d, i) => (
             <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-end', marginBottom: 12 }}>
               <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
-                <label>Producto</label>
+                <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  Producto
+                  <button type="button" onClick={() => setNuevoProductoModal(true)} style={{ background: 'none', border: 'none', color: '#4f46e5', cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
+                    + Nuevo Producto
+                  </button>
+                </label>
                 <select required value={d.productoId} onChange={e => cambiarDetalle(i, 'productoId', e.target.value)}>
                   <option value="">Seleccionar...</option>
                   {productos.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
@@ -176,6 +263,71 @@ export const Compras: React.FC = () => {
             <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancelar</button>
             <button type="submit" className="btn-submit" disabled={submitting}>
               {submitting ? 'Registrando...' : 'Registrar Compra'}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* MODALES SECUNDARIOS */}
+      <Modal open={nuevoProveedorModal} title="Nuevo Proveedor" onClose={() => setNuevoProveedorModal(false)}>
+        <form onSubmit={crearProveedor}>
+          <div className="form-group">
+            <label>Nombre del Proveedor</label>
+            <input required value={formProveedor.nombre} onChange={e => setFormProveedor({ ...formProveedor, nombre: e.target.value })} autoFocus />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input type="email" value={formProveedor.email} onChange={e => setFormProveedor({ ...formProveedor, email: e.target.value })} />
+          </div>
+          <div className="form-group">
+            <label>Teléfono</label>
+            <input value={formProveedor.telefono} onChange={e => setFormProveedor({ ...formProveedor, telefono: e.target.value })} />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setNuevoProveedorModal(false)}>Cancelar</button>
+            <button type="submit" className="btn-submit" disabled={submittingProveedor}>
+              {submittingProveedor ? 'Guardando...' : 'Crear Proveedor'}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal open={nuevaCategoriaModal} title="Nueva Categoría" onClose={() => setNuevaCategoriaModal(false)}>
+        <form onSubmit={crearCategoria}>
+          <div className="form-group">
+            <label>Nombre de Categoría</label>
+            <input required value={nuevaCategoriaNombre} onChange={e => setNuevaCategoriaNombre(e.target.value)} autoFocus />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setNuevaCategoriaModal(false)}>Cancelar</button>
+            <button type="submit" className="btn-submit" disabled={submittingCategoria}>
+              {submittingCategoria ? 'Guardando...' : 'Crear Categoría'}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal open={nuevoProductoModal} title="Nuevo Producto" onClose={() => setNuevoProductoModal(false)}>
+        <form onSubmit={crearProducto}>
+          <div className="form-group">
+            <label>Nombre</label>
+            <input required value={formProducto.nombre} onChange={e => setFormProducto({ ...formProducto, nombre: e.target.value })} autoFocus />
+          </div>
+          <div className="form-group">
+            <label>Categoría</label>
+            <select required value={formProducto.categoriaId} onChange={e => setFormProducto({ ...formProducto, categoriaId: e.target.value })}>
+              <option value="">Seleccionar...</option>
+              {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Precio Unitario de Venta ($)</label>
+            <input type="number" step="0.01" min="0.01" required value={formProducto.precio} onChange={e => setFormProducto({ ...formProducto, precio: e.target.value })} />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setNuevoProductoModal(false)}>Cancelar</button>
+            <button type="submit" className="btn-submit" disabled={submittingProducto}>
+              {submittingProducto ? 'Guardando...' : 'Crear Producto'}
             </button>
           </div>
         </form>

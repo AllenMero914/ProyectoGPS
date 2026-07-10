@@ -21,13 +21,16 @@ public class VentaService {
     private final VentaRepository ventaRepository;
     private final ProductoRepository productoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository clienteRepository;
 
     public VentaService(VentaRepository ventaRepository,
                         ProductoRepository productoRepository,
-                        UsuarioRepository usuarioRepository) {
+                        UsuarioRepository usuarioRepository,
+                        ClienteRepository clienteRepository) {
         this.ventaRepository = ventaRepository;
         this.productoRepository = productoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     public List<VentaResponseDTO> listar() {
@@ -47,8 +50,12 @@ public class VentaService {
         Usuario vendedor = usuarioRepository.findById(usuarioId)
             .orElseThrow(() -> new RecursoNoEncontradoException("Usuario", usuarioId));
 
+        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+            .orElseThrow(() -> new RecursoNoEncontradoException("Cliente", dto.getClienteId()));
+
         Venta venta = new Venta();
         venta.setUsuario(vendedor);
+        venta.setCliente(cliente);
 
         BigDecimal total = BigDecimal.ZERO;
         List<DetalleVenta> detalles = new ArrayList<>();
@@ -99,6 +106,17 @@ public class VentaService {
             )).collect(Collectors.toList());
 
         String vendedor = v.getUsuario() != null ? v.getUsuario().getNombre() : "N/A";
-        return new VentaResponseDTO(v.getId(), v.getFecha(), v.getTotal(), vendedor, detallesDtos);
+        
+        Long clienteId = null;
+        String clienteNombre = "N/A";
+        String clienteIdentificacion = "N/A";
+        
+        if (v.getCliente() != null) {
+            clienteId = v.getCliente().getId();
+            clienteNombre = v.getCliente().getNombre();
+            clienteIdentificacion = v.getCliente().getIdentificacion();
+        }
+        
+        return new VentaResponseDTO(v.getId(), v.getFecha(), v.getTotal(), vendedor, clienteId, clienteNombre, clienteIdentificacion, detallesDtos);
     }
 }

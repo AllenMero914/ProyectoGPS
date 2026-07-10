@@ -14,6 +14,9 @@ public class VentaResponseDTO {
     private LocalDateTime fecha;
     private BigDecimal total;
     private String vendedor;
+    private Long clienteId;
+    private String clienteNombre;
+    private String clienteIdentificacion;
     private List<DetalleVentaResponseDTO> detalles;
 
     @Data

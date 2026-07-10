@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Sidebar } from '../../modules/dashboard/components/Sidebar';
 import '../../dashboard.css';
 
 export const DashboardLayout: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     // Establecer el color de fondo del body para el dashboard
@@ -18,6 +19,13 @@ export const DashboardLayout: React.FC = () => {
 
   if (!isAuthenticated) {
     return <Navigate to="/sesion" replace />;
+  }
+
+  const esVendedor = user?.rol === 'VENDEDOR';
+  const rutasProhibidasVendedor = ['/dashboard/compras', '/dashboard/reportes', '/dashboard/usuarios', '/dashboard/proveedores'];
+
+  if (esVendedor && rutasProhibidasVendedor.includes(location.pathname)) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (

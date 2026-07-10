@@ -16,15 +16,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   searchPlaceholder = 'Buscar...',
   onSearch,
 }) => {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    if (window.confirm('¿Desea cerrar sesión?')) {
-      logout();
-      navigate('/sesion');
-    }
-  };
+  const { user } = useAuth();
 
   return (
     <header className="topbar">
@@ -37,11 +29,11 @@ export const Topbar: React.FC<TopbarProps> = ({
           <i className="fa-solid fa-magnifying-glass"></i>
           <input type="text" placeholder={searchPlaceholder} onChange={e => onSearch?.(e.target.value)} />
         </div>
-        <div className="admin-box" onClick={handleLogout} style={{ cursor: 'pointer' }} title="Haga clic para cerrar sesión">
-          <img src={adminAvatar} alt="Administrador" />
+        <div className="admin-box" style={{ cursor: 'default' }}>
+          <img src={adminAvatar} alt="Usuario" />
           <div>
-            <h4>Administrador</h4>
-            <span>Admin</span>
+            <h4>{user?.nombre || 'Usuario'}</h4>
+            <span>{user?.rol || 'Rol'}</span>
           </div>
         </div>
       </div>

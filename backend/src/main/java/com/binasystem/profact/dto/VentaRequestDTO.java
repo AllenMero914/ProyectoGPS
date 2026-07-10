@@ -12,6 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VentaRequestDTO {
+    @jakarta.validation.constraints.NotNull(message = "El cliente es obligatorio")
+    private Long clienteId;
+
     @NotEmpty(message = "La venta debe tener al menos un producto")
     @Valid
     private List<DetalleVentaDTO> detalles;

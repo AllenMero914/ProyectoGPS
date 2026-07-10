@@ -8,15 +8,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 @Configuration
 public class DataInitializer {
 
     @Bean
     CommandLineRunner initDatabase(
             UsuarioRepository usuarioRepo,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            JdbcTemplate jdbcTemplate) {
 
         return args -> {
+            try {
+                jdbcTemplate.execute("ALTER TABLE usuarios ALTER COLUMN rol VARCHAR(255)");
+            } catch (Exception e) {
+                // Ignore if it fails or already altered
+            }
             if (usuarioRepo.findByEmail("admin@profact.com").isEmpty()) {
                 Usuario admin = new Usuario();
                 admin.setNombre("Administrador");

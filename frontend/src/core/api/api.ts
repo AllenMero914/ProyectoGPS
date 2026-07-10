@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'http://localhost:8081/api';
 
 function authHeaders(): Record<string, string> {
   const token = localStorage.getItem('profact_token');
@@ -65,6 +65,24 @@ export interface CategoriaDTO {
   id: number;
   nombre: string;
   descripcion: string;
+}
+
+export interface ClienteDTO {
+  id: number;
+  identificacion: string;
+  nombre: string;
+  telefono: string;
+  direccion: string;
+  email: string;
+  activo: boolean;
+}
+
+export interface ProveedorDTO {
+  id: number;
+  nombre: string;
+  email: string;
+  telefono: string;
+  direccion: string;
   activo: boolean;
 }
 
@@ -73,7 +91,16 @@ export interface VentaDTO {
   fecha: string;
   total: number;
   vendedor: string;
-  detalles: VentaDetalleDTO[];
+  clienteId?: number;
+  clienteNombre?: string;
+  clienteIdentificacion?: string;
+  detalles: {
+    productoId: number;
+    productoNombre: string;
+    cantidad: number;
+    precioUnitario: number;
+    subtotal: number;
+  }[];
 }
 
 export interface VentaDetalleDTO {

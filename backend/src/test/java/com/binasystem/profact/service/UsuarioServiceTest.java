@@ -33,7 +33,7 @@ class UsuarioServiceTest {
     void crearUsuario_conDatosValidos_retornaUsuarioCreado() {
         // Arrange
         UsuarioRequestDTO dto = new UsuarioRequestDTO(
-            "Carlos López", "carlos.lopez@profact.com", "Empleado2026$", Rol.EMPLEADO
+            "Carlos López", "carlos.lopez@profact.com", "Empleado2026$", Rol.VENDEDOR
         );
         when(usuarioRepository.findByEmail("carlos.lopez@profact.com"))
                 .thenReturn(Optional.empty());
@@ -44,7 +44,7 @@ class UsuarioServiceTest {
         usuarioGuardado.setNombre("Carlos López");
         usuarioGuardado.setEmail("carlos.lopez@profact.com");
         usuarioGuardado.setContrasenaHash("$2a$10$hashedpassword");
-        usuarioGuardado.setRol(Rol.EMPLEADO);
+        usuarioGuardado.setRol(Rol.VENDEDOR);
         usuarioGuardado.setActivo(true);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioGuardado);
 
@@ -54,7 +54,7 @@ class UsuarioServiceTest {
         // Assert
         assertNotNull(response);
         assertEquals("carlos.lopez@profact.com", response.getEmail());
-        assertEquals(Rol.EMPLEADO, response.getRol());
+        assertEquals(Rol.VENDEDOR, response.getRol());
         assertTrue(response.isActivo());
         // RNF-001: La respuesta NO debe contener la contraseña
         assertNull(response.getContrasenaHash());
@@ -105,7 +105,7 @@ class UsuarioServiceTest {
     void crearUsuario_contrasenaHasheadaConBcrypt() {
         // RNF-001: Verificar que BCrypt es usado con factor 10
         UsuarioRequestDTO dto = new UsuarioRequestDTO(
-            "Test", "test@profact.com", "password", Rol.EMPLEADO
+            "Test", "test@profact.com", "password", Rol.VENDEDOR
         );
         when(usuarioRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password")).thenReturn("$2a$10$...");

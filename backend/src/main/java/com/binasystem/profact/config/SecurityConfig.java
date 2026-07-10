@@ -38,8 +38,15 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll()
                 // CA-002.5: Solo ADMIN puede gestionar usuarios
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                // Categorias: GET para todos, POST/PUT/DELETE para ADMIN
+                .requestMatchers(HttpMethod.GET, "/api/categorias/**").authenticated()
                 .requestMatchers("/api/categorias/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/productos/**").hasRole("ADMIN")
+                // Productos: GET para todos, POST/PUT/DELETE para ADMIN
+                .requestMatchers(HttpMethod.GET, "/api/productos/**").authenticated()
+                .requestMatchers("/api/productos/**").hasRole("ADMIN")
+                // Proveedores y Reportes para ADMIN
+                .requestMatchers("/api/proveedores/**").hasRole("ADMIN")
+                .requestMatchers("/api/reportes/**").hasRole("ADMIN")
                 // Todas las demás rutas requieren autenticación
                 .anyRequest().authenticated()
             )

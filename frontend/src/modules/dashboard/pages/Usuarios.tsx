@@ -9,7 +9,7 @@ export const Usuarios: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editando, setEditando] = useState<UsuarioDTO | null>(null);
-  const [form, setForm] = useState({ nombre: '', email: '', contrasena: '', rol: 'EMPLEADO' });
+  const [form, setForm] = useState({ nombre: '', email: '', contrasena: '', rol: 'VENDEDOR' });
   const [submitting, setSubmitting] = useState(false);
 
   const load = async () => {
@@ -24,7 +24,7 @@ export const Usuarios: React.FC = () => {
 
   const openNuevo = () => {
     setEditando(null);
-    setForm({ nombre: '', email: '', contrasena: '', rol: 'EMPLEADO' });
+    setForm({ nombre: '', email: '', contrasena: '', rol: 'VENDEDOR' });
     setModalOpen(true);
   };
 
@@ -166,8 +166,8 @@ export const Usuarios: React.FC = () => {
           <div className="form-group">
             <label>Rol</label>
             <select value={form.rol} onChange={e => setForm({ ...form, rol: e.target.value })}>
-              <option value="EMPLEADO">Empleado</option>
-              <option value="ADMIN">Administrador</option>
+              <option value="ADMIN">Administrador (Acceso Total)</option>
+              <option value="VENDEDOR">Vendedor (Ventas e Inventario Limitado)</option>
             </select>
           </div>
           <div className="form-actions">

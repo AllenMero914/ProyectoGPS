@@ -3,8 +3,12 @@ import { Topbar } from '../components/Topbar';
 import { Modal } from '../../../core/components/Modal';
 import { api } from '../../../core/api/api';
 import type { ProductoDTO, CategoriaDTO } from '../../../core/api/api';
+import { useAuth } from '../../../core/context/AuthContext';
 
 export const Inventario: React.FC = () => {
+  const { user } = useAuth();
+  const esVendedor = user?.rol === 'VENDEDOR';
+  
   const [productos, setProductos] = useState<ProductoDTO[]>([]);
   const [categorias, setCategorias] = useState<CategoriaDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +17,10 @@ export const Inventario: React.FC = () => {
   const [form, setForm] = useState({ nombre: '', descripcion: '', precio: '', stock: '', stockMinimo: '', categoriaId: '' });
   const [submitting, setSubmitting] = useState(false);
   const [search, setSearch] = useState('');
+
+  const [nuevaCategoriaModal, setNuevaCategoriaModal] = useState(false);
+  const [nuevaCategoriaNombre, setNuevaCategoriaNombre] = useState('');
+  const [nuevaCategoriaSubmitting, setNuevaCategoriaSubmitting] = useState(false);
 
   const load = async () => {
     try {
@@ -70,6 +78,21 @@ export const Inventario: React.FC = () => {
       alert(err instanceof Error ? err.message : 'Error al guardar');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const crearCategoria = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setNuevaCategoriaSubmitting(true);
+    try {
+      await api.post('/categorias', { nombre: nuevaCategoriaNombre, descripcion: '' });
+      setNuevaCategoriaModal(false);
+      setNuevaCategoriaNombre('');
+      await load();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error al crear categoría');
+    } finally {
+      setNuevaCategoriaSubmitting(false);
     }
   };
 
@@ -133,7 +156,7 @@ export const Inventario: React.FC = () => {
       <section className="table-section">
         <div className="table-header">
           <h2>Lista de Productos</h2>
-          <button onClick={openNuevo}><i className="fa-solid fa-plus"></i> Nuevo Producto</button>
+          {!esVendedor && <button onClick={openNuevo}><i className="fa-solid fa-plus"></i> Nuevo Producto</button>}
         </div>
         <table>
           <thead>
@@ -145,7 +168,7 @@ export const Inventario: React.FC = () => {
               <th>Stock</th>
               <th>Stock Mín</th>
               <th>Estado</th>
-              <th>Acciones</th>
+              {!esVendedor && <th>Acciones</th>}
             </tr>
           </thead>
           <tbody>
@@ -166,14 +189,16 @@ export const Inventario: React.FC = () => {
                    p.stockBajo ? <span className="status warning">Bajo Stock</span> :
                    <span className="status available">Disponible</span>}
                 </td>
-                <td>
-                  <button className="btn-icon edit" onClick={() => openEditar(p)} title="Editar">
-                    <i className="fa-solid fa-pen"></i>
-                  </button>
-                  <button className="btn-icon delete" onClick={() => eliminar(p.id)} title="Eliminar">
-                    <i className="fa-solid fa-trash"></i>
-                  </button>
-                </td>
+                {!esVendedor && (
+                  <td>
+                    <button className="btn-icon edit" onClick={() => openEditar(p)} title="Editar">
+                      <i className="fa-solid fa-pen"></i>
+                    </button>
+                    <button className="btn-icon delete" onClick={() => eliminar(p.id)} title="Eliminar">
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -191,7 +216,12 @@ export const Inventario: React.FC = () => {
             <textarea value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} />
           </div>
           <div className="form-group">
-            <label>Categoría</label>
+            <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+              Categoría
+              <button type="button" onClick={() => setNuevaCategoriaModal(true)} style={{ background: 'none', border: 'none', color: '#4f46e5', cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
+                + Nueva Categoría
+              </button>
+            </label>
             <select required value={form.categoriaId} onChange={e => setForm({ ...form, categoriaId: e.target.value })}>
               <option value="">Seleccionar...</option>
               {categorias.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
@@ -213,6 +243,21 @@ export const Inventario: React.FC = () => {
             <button type="button" className="btn-cancel" onClick={() => setModalOpen(false)}>Cancelar</button>
             <button type="submit" className="btn-submit" disabled={submitting}>
               {submitting ? 'Guardando...' : editando ? 'Actualizar' : 'Crear'}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal open={nuevaCategoriaModal} title="Nueva Categoría" onClose={() => setNuevaCategoriaModal(false)}>
+        <form onSubmit={crearCategoria}>
+          <div className="form-group">
+            <label>Nombre de Categoría</label>
+            <input required value={nuevaCategoriaNombre} onChange={e => setNuevaCategoriaNombre(e.target.value)} autoFocus />
+          </div>
+          <div className="form-actions">
+            <button type="button" className="btn-cancel" onClick={() => setNuevaCategoriaModal(false)}>Cancelar</button>
+            <button type="submit" className="btn-submit" disabled={nuevaCategoriaSubmitting}>
+              {nuevaCategoriaSubmitting ? 'Guardando...' : 'Crear'}
             </button>
           </div>
         </form>
