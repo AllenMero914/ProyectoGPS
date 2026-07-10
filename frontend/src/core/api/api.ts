@@ -53,6 +53,7 @@ export interface ProductoDTO {
   nombre: string;
   descripcion: string;
   precio: number;
+  precioCompra?: number;
   stock: number;
   stockMinimo: number;
   stockBajo: boolean;
@@ -89,6 +90,8 @@ export interface ProveedorDTO {
 export interface VentaDTO {
   id: number;
   fecha: string;
+  subtotal: number;
+  iva: number;
   total: number;
   vendedor: string;
   clienteId?: number;
@@ -114,8 +117,18 @@ export interface VentaDetalleDTO {
 export interface CompraDTO {
   id: number;
   fecha: string;
+  subtotal: number;
+  iva: number;
   total: number;
   proveedorNombre: string;
+  proveedorId?: number;
+  detalles?: {
+    productoId: number;
+    productoNombre: string;
+    cantidad: number;
+    precioUnitario: number;
+    subtotal: number;
+  }[];
 }
 
 export interface UsuarioDTO {

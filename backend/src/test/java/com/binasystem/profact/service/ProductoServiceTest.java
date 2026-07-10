@@ -31,7 +31,7 @@ class ProductoServiceTest {
     void crearProducto_conDatosValidos_retornaProductoCreado() {
         ProductoRequestDTO dto = new ProductoRequestDTO(
             "Taladro Bosch", "Taladro percutor 750W",
-            new BigDecimal("89.99"), 15, 3, 1L
+            new BigDecimal("89.99"), new BigDecimal("60.00"), 15, 3, 1L
         );
         Categoria cat = new Categoria();
         cat.setId(1L);
@@ -55,7 +55,7 @@ class ProductoServiceTest {
     void crearProducto_conPrecioNegativo_lanzaValidacionException() {
         ProductoRequestDTO dto = new ProductoRequestDTO(
             "Producto Malo", "Desc",
-            new BigDecimal("-10.00"), 5, 1, 1L
+            new BigDecimal("-10.00"), null, 5, 1, 1L
         );
 
         assertThrows(ValidacionException.class, () -> productoService.crearProducto(dto));
@@ -65,7 +65,7 @@ class ProductoServiceTest {
     void crearProducto_conStockNegativo_lanzaValidacionException() {
         ProductoRequestDTO dto = new ProductoRequestDTO(
             "Producto Malo", "Desc",
-            new BigDecimal("10.00"), -1, 1, 1L
+            new BigDecimal("10.00"), null, -1, 1, 1L
         );
 
         assertThrows(ValidacionException.class, () -> productoService.crearProducto(dto));

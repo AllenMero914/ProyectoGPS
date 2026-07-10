@@ -10,12 +10,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.binasystem.profact.entity.Parametro;
+import com.binasystem.profact.repository.ParametroRepository;
+
 @Configuration
 public class DataInitializer {
 
     @Bean
     CommandLineRunner initDatabase(
             UsuarioRepository usuarioRepo,
+            ParametroRepository parametroRepo,
             PasswordEncoder passwordEncoder,
             JdbcTemplate jdbcTemplate) {
 
@@ -41,6 +45,14 @@ public class DataInitializer {
                 root.setRol(Rol.ADMIN);
                 root.setActivo(true);
                 usuarioRepo.save(root);
+            }
+            
+            if (parametroRepo.findByClave("IVA").isEmpty()) {
+                Parametro p = new Parametro();
+                p.setClave("IVA");
+                p.setValor("15");
+                p.setDescripcion("Porcentaje de Impuesto al Valor Agregado");
+                parametroRepo.save(p);
             }
         };
     }

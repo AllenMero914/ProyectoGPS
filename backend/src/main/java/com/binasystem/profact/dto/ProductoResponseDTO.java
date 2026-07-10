@@ -12,6 +12,7 @@ public class ProductoResponseDTO {
     private String nombre;
     private String descripcion;
     private BigDecimal precio;
+    private BigDecimal precioCompra;
     private int stock;
     private int stockMinimo;
     private boolean stockBajo;        // true si stock <= stockMinimo

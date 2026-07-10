@@ -56,6 +56,7 @@ public class ProductoService {
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
+        producto.setPrecioCompra(dto.getPrecioCompra());
         producto.setStock(dto.getStock());
         producto.setStockMinimo(dto.getStockMinimo());
         producto.setCategoria(categoria);
@@ -76,6 +77,7 @@ public class ProductoService {
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
         producto.setPrecio(dto.getPrecio());
+        producto.setPrecioCompra(dto.getPrecioCompra());
         producto.setStock(dto.getStock());
         producto.setStockMinimo(dto.getStockMinimo());
         producto.setCategoria(categoria);
@@ -96,6 +98,9 @@ public class ProductoService {
         if (dto.getPrecio() != null && dto.getPrecio().compareTo(BigDecimal.ZERO) <= 0) {
             throw new ValidacionException("El precio debe ser mayor a cero");
         }
+        if (dto.getPrecioCompra() != null && dto.getPrecioCompra().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidacionException("El precio de compra no puede ser negativo");
+        }
         if (dto.getStock() < 0) {
             throw new ValidacionException("El stock no puede ser negativo");
         }
@@ -107,7 +112,7 @@ public class ProductoService {
         Long catId = p.getCategoria() != null ? p.getCategoria().getId() : null;
         return new ProductoResponseDTO(
             p.getId(), p.getNombre(), p.getDescripcion(),
-            p.getPrecio(), p.getStock(), p.getStockMinimo(),
+            p.getPrecio(), p.getPrecioCompra(), p.getStock(), p.getStockMinimo(),
             stockBajo, catNombre, catId, p.isActivo()
         );
     }

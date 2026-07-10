@@ -16,6 +16,7 @@ public class ProductoRequestDTO {
     private String descripcion;
     @NotNull @DecimalMin("0.01")
     private BigDecimal precio;
+    private BigDecimal precioCompra;
     @Min(0)
     private int stock;
     @Min(0)

@@ -28,6 +28,9 @@ public class Producto {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
+    @Column(precision = 10, scale = 2)
+    private BigDecimal precioCompra;
+
     @Column(nullable = false)
     private int stock = 0;
 
