@@ -18,4 +18,6 @@ public class VentaRequestDTO {
     @NotEmpty(message = "La venta debe tener al menos un producto")
     @Valid
     private List<DetalleVentaDTO> detalles;
+
+    private boolean aplicarIva = false;
 }

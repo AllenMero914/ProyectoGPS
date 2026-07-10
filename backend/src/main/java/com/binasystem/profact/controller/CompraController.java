@@ -44,4 +44,14 @@ public class CompraController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(compraService.registrarCompra(dto, usuarioId));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CompraResponseDTO> editar(
+            @PathVariable Long id,
+            @Valid @RequestBody CompraRequestDTO dto,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = usuarioRepository.findByEmail(userDetails.getUsername())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado")).getId();
+        return ResponseEntity.ok(compraService.editarCompra(id, dto, usuarioId));
+    }
 }

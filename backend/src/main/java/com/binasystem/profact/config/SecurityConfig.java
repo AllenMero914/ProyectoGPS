@@ -44,6 +44,9 @@ public class SecurityConfig {
                 // Productos: GET para todos, POST/PUT/DELETE para ADMIN
                 .requestMatchers(HttpMethod.GET, "/api/productos/**").authenticated()
                 .requestMatchers("/api/productos/**").hasRole("ADMIN")
+                // Edición de transacciones (Ventas y Compras) protegidas para ADMIN
+                .requestMatchers(HttpMethod.PUT, "/api/ventas/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/compras/**").hasRole("ADMIN")
                 // Proveedores y Reportes para ADMIN
                 .requestMatchers("/api/proveedores/**").hasRole("ADMIN")
                 .requestMatchers("/api/reportes/**").hasRole("ADMIN")

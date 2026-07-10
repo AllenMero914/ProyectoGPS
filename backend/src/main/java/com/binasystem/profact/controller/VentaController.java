@@ -45,4 +45,14 @@ public class VentaController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ventaService.registrarVenta(dto, usuarioId));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VentaResponseDTO> editar(
+            @PathVariable Long id,
+            @Valid @RequestBody VentaRequestDTO dto,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Long usuarioId = usuarioRepository.findByEmail(userDetails.getUsername())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado")).getId();
+        return ResponseEntity.ok(ventaService.editarVenta(id, dto, usuarioId));
+    }
 }

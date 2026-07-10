@@ -22,15 +22,18 @@ public class VentaService {
     private final ProductoRepository productoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ClienteRepository clienteRepository;
+    private final ParametroService parametroService;
 
     public VentaService(VentaRepository ventaRepository,
                         ProductoRepository productoRepository,
                         UsuarioRepository usuarioRepository,
-                        ClienteRepository clienteRepository) {
+                        ClienteRepository clienteRepository,
+                        ParametroService parametroService) {
         this.ventaRepository = ventaRepository;
         this.productoRepository = productoRepository;
         this.usuarioRepository = usuarioRepository;
         this.clienteRepository = clienteRepository;
+        this.parametroService = parametroService;
     }
 
     public List<VentaResponseDTO> listar() {
@@ -44,7 +47,6 @@ public class VentaService {
             .orElseThrow(() -> new RecursoNoEncontradoException("Venta", id)));
     }
 
-    // CA-005.5: @Transactional garantiza atomicidad (RNF-006)
     @Transactional
     public VentaResponseDTO registrarVenta(VentaRequestDTO dto, Long usuarioId) {
         Usuario vendedor = usuarioRepository.findById(usuarioId)
@@ -57,27 +59,25 @@ public class VentaService {
         venta.setUsuario(vendedor);
         venta.setCliente(cliente);
 
-        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal subtotalGeneral = BigDecimal.ZERO;
         List<DetalleVenta> detalles = new ArrayList<>();
 
         for (DetalleVentaDTO item : dto.getDetalles()) {
             Producto producto = productoRepository.findById(item.getProductoId())
                 .orElseThrow(() -> new RecursoNoEncontradoException("Producto", item.getProductoId()));
 
-            // CA-005.2: Verificar stock suficiente
             if (producto.getStock() < item.getCantidad()) {
                 throw new StockInsuficienteException(
                     producto.getNombre(), producto.getStock(), item.getCantidad()
                 );
             }
 
-            // CA-005.4: Reducir stock
             producto.setStock(producto.getStock() - item.getCantidad());
             productoRepository.save(producto);
 
             BigDecimal subtotal = producto.getPrecio()
                 .multiply(BigDecimal.valueOf(item.getCantidad()));
-            total = total.add(subtotal);
+            subtotalGeneral = subtotalGeneral.add(subtotal);
 
             DetalleVenta detalle = new DetalleVenta();
             detalle.setVenta(venta);
@@ -88,9 +88,82 @@ public class VentaService {
             detalles.add(detalle);
         }
 
-        // CA-005.3: Total calculado automáticamente
+        BigDecimal ivaAmount = BigDecimal.ZERO;
+        if (dto.isAplicarIva()) {
+            String ivaStr = parametroService.obtenerValor("IVA", "0");
+            BigDecimal ivaPorcentaje = new BigDecimal(ivaStr).divide(new BigDecimal("100"));
+            ivaAmount = subtotalGeneral.multiply(ivaPorcentaje);
+        }
+
+        BigDecimal total = subtotalGeneral.add(ivaAmount);
+
+        venta.setSubtotal(subtotalGeneral);
+        venta.setIva(ivaAmount);
         venta.setTotal(total);
         venta.setDetalles(detalles);
+
+        return mapToDTO(ventaRepository.save(venta));
+    }
+
+    @Transactional
+    public VentaResponseDTO editarVenta(Long id, VentaRequestDTO dto, Long usuarioId) {
+        Venta venta = ventaRepository.findById(id)
+            .orElseThrow(() -> new RecursoNoEncontradoException("Venta", id));
+
+        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+            .orElseThrow(() -> new RecursoNoEncontradoException("Cliente", dto.getClienteId()));
+        venta.setCliente(cliente);
+
+        // 1. Revertir stock de los detalles originales
+        for (DetalleVenta d : venta.getDetalles()) {
+            Producto p = d.getProducto();
+            p.setStock(p.getStock() + d.getCantidad());
+            productoRepository.save(p);
+        }
+        
+        venta.getDetalles().clear();
+
+        BigDecimal subtotalGeneral = BigDecimal.ZERO;
+        
+        // 2. Aplicar nuevos detalles
+        for (DetalleVentaDTO item : dto.getDetalles()) {
+            Producto producto = productoRepository.findById(item.getProductoId())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Producto", item.getProductoId()));
+
+            if (producto.getStock() < item.getCantidad()) {
+                throw new StockInsuficienteException(
+                    producto.getNombre(), producto.getStock(), item.getCantidad()
+                );
+            }
+
+            producto.setStock(producto.getStock() - item.getCantidad());
+            productoRepository.save(producto);
+
+            BigDecimal subtotal = producto.getPrecio()
+                .multiply(BigDecimal.valueOf(item.getCantidad()));
+            subtotalGeneral = subtotalGeneral.add(subtotal);
+
+            DetalleVenta detalle = new DetalleVenta();
+            detalle.setVenta(venta);
+            detalle.setProducto(producto);
+            detalle.setCantidad(item.getCantidad());
+            detalle.setPrecioUnitario(producto.getPrecio());
+            detalle.setSubtotal(subtotal);
+            venta.getDetalles().add(detalle);
+        }
+
+        BigDecimal ivaAmount = BigDecimal.ZERO;
+        if (dto.isAplicarIva()) {
+            String ivaStr = parametroService.obtenerValor("IVA", "0");
+            BigDecimal ivaPorcentaje = new BigDecimal(ivaStr).divide(new BigDecimal("100"));
+            ivaAmount = subtotalGeneral.multiply(ivaPorcentaje);
+        }
+
+        BigDecimal total = subtotalGeneral.add(ivaAmount);
+
+        venta.setSubtotal(subtotalGeneral);
+        venta.setIva(ivaAmount);
+        venta.setTotal(total);
 
         return mapToDTO(ventaRepository.save(venta));
     }
@@ -117,6 +190,6 @@ public class VentaService {
             clienteIdentificacion = v.getCliente().getIdentificacion();
         }
         
-        return new VentaResponseDTO(v.getId(), v.getFecha(), v.getTotal(), vendedor, clienteId, clienteNombre, clienteIdentificacion, detallesDtos);
+        return new VentaResponseDTO(v.getId(), v.getFecha(), v.getSubtotal(), v.getIva(), v.getTotal(), vendedor, clienteId, clienteNombre, clienteIdentificacion, detallesDtos);
     }
 }

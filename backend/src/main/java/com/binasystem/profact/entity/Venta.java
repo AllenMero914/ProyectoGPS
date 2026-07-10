@@ -26,6 +26,12 @@ public class Venta {
     private LocalDateTime fecha = LocalDateTime.now();
 
     @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal subtotal = BigDecimal.ZERO;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal iva = BigDecimal.ZERO;
+
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY)
