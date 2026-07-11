@@ -1,4 +1,5 @@
-const API_BASE = 'http://localhost:8081/api';
+// Usa la URL del backend en producción (Render) o localhost en desarrollo
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8081/api';
 
 function authHeaders(): Record<string, string> {
   const token = localStorage.getItem('profact_token');
