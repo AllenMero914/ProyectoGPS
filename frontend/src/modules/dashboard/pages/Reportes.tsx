@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 
 import { api } from '../../../core/api/api';
-import type { DashboardMetricas, VentaDTO, CompraDTO } from '../../../core/api/api';
+import type { VentaDTO, CompraDTO } from '../../../core/api/api';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, PieChart, Pie, Cell
 } from 'recharts';
-import { format, getWeek, getYear, getMonth, startOfWeek, endOfWeek } from 'date-fns';
+import { format, getWeek, getYear, getMonth, startOfWeek } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useAuth } from '../../../core/context/AuthContext';
 import './Reportes.css';
