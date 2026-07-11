@@ -1,0 +1,1439 @@
+% ============================================================
+%  ProFact — Informe Final del Proyecto Integrador
+%  Gestión de Proyectos de Software (TDSD333)
+%  ESFOT / Escuela Politécnica Nacional
+%  Julio 2026
+% ============================================================
+\documentclass[12pt, letterpaper]{report}
+
+% ── Paquetes ─────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{times}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{tocloft}
+\usepackage{pdfpages}
+
+% ── Configuración de página ──────────────────────────────────
+\geometry{
+  letterpaper,
+  top    = 2.54cm,
+  bottom = 2.54cm,
+  left   = 2.54cm,
+  right  = 2.54cm
+}
+
+% ── Colores (blanco y negro) ─────────────────────────────────
+\definecolor{codebg}  {HTML}{F4F4F4}
+
+% ── Tipografía de títulos (blanco y negro) ───────────────────
+\titleformat{\chapter}[block]
+  {\normalfont\Large\bfseries}
+  {\thechapter.}{1em}{}
+  [\vspace{0.3em}\titlerule]
+
+\titleformat{\section}
+  {\normalfont\large\bfseries}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+
+% ── Encabezado y pie de página ───────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Tecnología Superior en Desarrollo de Software}}
+\fancyhead[R]{\small\textit{ProFact — Informe Final}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ── Configuración de listings (código) ───────────────────────
+\lstset{
+  backgroundcolor = \color{white},
+  basicstyle      = \small\ttfamily,
+  breaklines      = true,
+  frame           = single,
+  framerule       = 0.5pt,
+  rulecolor       = \color{black},
+  numbers         = left,
+  numberstyle     = \tiny,
+  tabsize         = 2
+}
+
+% ── Interlineado ─────────────────────────────────────────────
+\onehalfspacing
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+
+% ────────────────────────────────────────────────────────────
+%  CARÁTULA
+% ────────────────────────────────────────────────────────────
+\begin{titlepage}
+\begin{center}
+    \vspace*{1cm}
+
+    % Placeholder para logo EPN
+    \begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.3\textwidth}{\centering\vspace{1.5cm}\textit{[Insertar logo EPN]}\vspace{1.5cm}}}
+    \end{figure}
+
+    \vspace{0.5cm}
+    {\Large \textbf{ESCUELA POLITÉCNICA NACIONAL}} \\[0.3cm]
+    {\large \textbf{ESCUELA DE FORMACIÓN DE TECNÓLOGOS}} \\[0.3cm]
+    {\large \textbf{TECNOLOGÍA EN DESARROLLO DE SOFTWARE}} \\[1.5cm]
+
+    {\large \textbf{DESARROLLO E IMPLEMENTACIÓN DEL SISTEMA WEB PROFACT PARA LA GESTIÓN INTEGRAL DE INVENTARIOS, COMPRAS Y VENTAS EN NEGOCIOS PEQUEÑOS Y MICROEMPRESAS COMERCIALES}} \\[1.5cm]
+
+    MERO CHICAIZA ALLEN JAHIR \\
+    allen.mero@epn.edu.ec \\[0.5cm]
+
+    LANCHE FLORES FRANCISCO PAUL \\
+    francisco.lanche@epn.edu.ec \\[1.5cm]
+
+    DOCENTE: ING. JUAN CARLOS GONZALEZ MSC. \\
+    juan.gonzalez02@epn.edu.ec \\[1.5cm]
+
+    Quito, julio 2026
+
+\end{center}
+\end{titlepage}
+
+
+% ────────────────────────────────────────────────────────────
+%  PÁGINAS PRELIMINARES (numeración romana)
+% ────────────────────────────────────────────────────────────
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\tableofcontents
+\newpage
+
+\listoftables
+\newpage
+
+\listoffigures
+\newpage
+
+
+% ────────────────────────────────────────────────────────────
+%  CUERPO DEL DOCUMENTO (numeración árabe)
+% ────────────────────────────────────────────────────────────
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+
+% ============================================================
+%  CAPÍTULO 1 — DESCRIPCIÓN DEL PROBLEMA
+% ============================================================
+\chapter{Descripción del Problema}
+
+\section{Contexto General}
+
+En Ecuador, las microempresas y los negocios pequeños del sector comercial como tiendas de abarrotes, farmacias populares, ferreterías, papelerías y provisiones en general siguen manejando su inventario de manera totalmente manual. Los empleados anotan las entradas de mercancías en cuadernos físicos, las ventas quedan registradas en talonarios de facturas en papel, y el stock se cuenta a mano, cuando mucho, una vez por semana.
+
+\section{Situación Actual (AS-IS)}
+
+Ese esquema absorbe entre tres y cinco horas semanales de trabajo operativo por empleado, solo para registrar movimientos, y aun así la información no queda realmente asegurada. Quien termina pagando el costo es el dueño o administrador, por lo que, en promedio se reportan entre ocho y quince inconsistencias de stock por semana.
+
+\section{Síntomas y Manifestaciones del Problema}
+
+Ahí aparecen errores al contar, registros duplicados y documentos físicos que se pierden o se deterioran con facilidad. Estas fallas ocurren casi a diario en negocios con alta rotación de productos y afectan tanto al personal de bodega como al de ventas, que trabaja con datos incompletos y ya desactualizados.
+
+\section{Causas Identificadas}
+
+La raíz del problema es bastante clara: no existe un sistema de información centralizado que conecte compras, inventario y ventas. Sin una herramienta digital que sincronice en tiempo real las operaciones del dueño, el cajero y el bodeguero, cada persona termina trabajando con datos fragmentados e incompatibles.
+
+\section{Impacto y Consecuencias}
+
+De ahí salen los problemas concretos: desabastecimiento de productos que corta ventas de inmediato, sobre stock que inmoviliza capital, facturas con errores que generan conflictos con proveedores y clientes, e imposibilidad de saber con precisión cuánto gana realmente el negocio sin dedicar jornadas enteras al cuadre manual.
+
+\section{Propuesta de Solución}
+
+Con ProFact, una plataforma web integral para gestionar inventarios, compras y ventas, se propone automatizar los procesos operativos, centralizar la información en tiempo real y entregar al administrador informes y alertas para tomar decisiones con datos precisos y confiables.
+
+
+% ============================================================
+%  CAPÍTULO 2 — OBJETIVOS
+% ============================================================
+\chapter{Objetivos}
+
+\section{Objetivo General}
+
+Crear un sistema web integral llamado ProFact para automatizar y controlar los procesos de gestión de inventarios, compras y ventas en microempresas, de modo que el administrador y los empleados trabajen con información confiable en tiempo real, reduzcan errores operativos y mejoren la capacidad de tomar decisiones estratégicas dentro del negocio.
+
+\section{Objetivos Específicos}
+
+\begin{enumerate}
+    \item \textbf{Analizar} los procesos actuales de gestión de inventario, compras y ventas en microempresas, mediante el levantamiento de requerimientos funcionales y no funcionales que definen las funcionalidades prioritarias y el alcance del sistema ProFact.
+    \item \textbf{Diseñar} la arquitectura del sistema ProFact, incluyendo el modelo de base de datos relacional, los diagramas de casos de uso y clases, y los prototipos de interfaz de usuario (mockups), con una experiencia intuitiva y diferenciada por rol.
+    \item \textbf{Implementar} los módulos principales del sistema, tales como gestión de inventario, compras, ventas y administración de usuarios con funcionalidades de facturación interna, ajuste manual de stock, alertas de stock mínimo y un tablero de informes dinámicos.
+    \item \textbf{Validar} el correcto funcionamiento del sistema mediante pruebas funcionales, de integración y de aceptación de usuario, comprobando que los requerimientos levantados se cumplan de forma satisfactoria en cada sprint.
+    \item \textbf{Documentar} el sistema mediante manuales técnicos y de usuario que faciliten su comprensión, mantenimiento y futura escalabilidad por parte del equipo de desarrollo o del propietario del negocio.
+\end{enumerate}
+
+
+% ============================================================
+%  CAPÍTULO 3 — ALCANCE DEL PROYECTO
+% ============================================================
+\chapter{Alcance del Proyecto}
+
+\section{Tipo de Sistema}
+
+ProFact es una aplicación web de escritorio accesible desde cualquier navegador moderno, sin necesidad de instalación local.
+
+\section{Módulos y Funcionalidades Incluidas}
+
+\begin{table}[H]
+\centering
+\caption{Módulos del sistema ProFact}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Módulo} & \textbf{Funcionalidades principales} \\ \hline
+Dashboard de Reportes & Indicadores de ventas, ingresos/egresos, gráfico de clientes frecuentes, comparativo compras vs.\ ventas, productos con bajo stock \\ \hline
+Gestión de Inventario & Registro de productos (código, categoría, stock mínimo, precio de compra y venta), alertas de stock crítico \\ \hline
+Módulo de Compras & Gestión de proveedores, historial de compras, órdenes de compra, edición de transacciones con reversión de stock \\ \hline
+Módulo de Ventas & Administración de clientes, facturación con generación de PDF, edición de transacciones \\ \hline
+Gestión de Usuarios & CRUD de usuarios, asignación de roles (administrador/empleado) \\ \hline
+Configuración & Parámetros del sistema (IVA dinámico), gestión de categorías \\ \hline
+Reportes y Exportación & Reportes con filtros semanal/mensual/anual, gráficos interactivos, exportación PDF \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Roles de Usuario Contemplados}
+
+El sistema contempla dos roles de usuario:
+\begin{itemize}
+    \item \textbf{Administrador / Propietario}: acceso completo a todos los módulos del sistema, incluyendo configuración, gestión de usuarios, reportes financieros y edición de transacciones.
+    \item \textbf{Empleado / Cajero}: acceso limitado a las operaciones de ventas e inventario, sin acceso al dashboard financiero, reportes, compras ni configuración del sistema.
+\end{itemize}
+
+\section{Integraciones Incluidas}
+
+El sistema integra generación de facturas en formato PDF mediante la librería jsPDF, gráficos interactivos con Recharts, y un sistema de alertas internas para notificaciones de stock bajo.
+
+\section{Limitaciones Explícitas (Fuera del Alcance)}
+
+Quedan fuera del alcance del proyecto los siguientes aspectos:
+\begin{itemize}
+    \item Integración con el sistema de facturación electrónica del SRI (Servicio de Rentas Internas del Ecuador).
+    \item Desarrollo de una aplicación móvil nativa para iOS o Android.
+    \item Incorporación de módulos de contabilidad formal, recursos humanos o nómina.
+    \item Integración con plataformas de comercio electrónico o mercados externos.
+    \item Conectividad con hardware (lectores de código de barras, impresoras fiscales).
+    \item Soporte técnico o mantenimiento evolutivo más allá del alcance académico del proyecto.
+\end{itemize}
+
+
+% ============================================================
+%  CAPÍTULO 4 — MARCO TEÓRICO
+% ============================================================
+\chapter{Marco Teórico}
+
+\section{Control de Inventarios}
+
+El control de inventarios constituye una de las funciones operativas más críticas para cualquier empresa comercial, especialmente para las microempresas que dependen de una rotación constante de mercadería. Según Krajewski, Ritzman y Malhotra (2013), el inventario representa uno de los activos más costosos de una organización, y su gestión eficiente incide directamente en la rentabilidad del negocio.
+
+En el contexto ecuatoriano, las microempresas del sector comercial carecen frecuentemente de herramientas tecnológicas para gestionar su inventario, lo que genera inconsistencias en los registros, pérdidas económicas y desabastecimiento. Un sistema de información que automatice el seguimiento de entradas, salidas y niveles de stock permite reducir estos problemas y optimizar la toma de decisiones de reabastecimiento.
+
+\section{Sistemas de Información Web}
+
+Un sistema de información web es una aplicación que opera sobre la arquitectura cliente-servidor, donde el navegador actúa como cliente y se comunica con un servidor que procesa la lógica de negocio y gestiona los datos persistentes. Laudon y Laudon (2020) definen estos sistemas como herramientas que recopilan, procesan, almacenan y distribuyen información para apoyar la toma de decisiones y el control dentro de una organización.
+
+La arquitectura REST (Representational State Transfer), propuesta por Fielding (2000), se ha consolidado como el estándar para la comunicación entre el cliente y el servidor mediante una API que expone recursos a través de verbos HTTP (GET, POST, PUT, DELETE) y utiliza JSON como formato de intercambio de datos. Esta arquitectura permite desacoplar completamente el frontend del backend, facilitando el mantenimiento y la escalabilidad independiente de cada componente.
+
+\section{Stack Tecnológico}
+
+\subsection{TypeScript y React.js}
+
+TypeScript es un superconjunto de JavaScript que añade tipado estático al lenguaje, permitiendo detectar errores en tiempo de compilación antes de la ejecución. En un sistema financiero con múltiples entidades relacionadas, el tipado estático resulta crítico para garantizar la integridad de los datos que se transmiten entre componentes.
+
+React.js es una biblioteca de JavaScript desarrollada por Meta para la construcción de interfaces de usuario basadas en componentes reutilizables. Su modelo de renderizado declarativo y el uso del Virtual DOM permiten actualizar la interfaz de manera eficiente. Combinado con Vite como herramienta de construcción, React ofrece un entorno de desarrollo con Hot Module Replacement (HMR) que reduce significativamente los tiempos de desarrollo.
+
+\subsection{Java y Spring Boot}
+
+Java es un lenguaje de programación orientado a objetos con tipado fuerte, ampliamente utilizado en el desarrollo de aplicaciones empresariales. Spring Boot es un framework que simplifica la configuración y el despliegue de aplicaciones basadas en Spring, proporcionando una arquitectura en capas integrada (Controller, Service, Repository) que promueve la separación de responsabilidades.
+
+Spring Security proporciona autenticación y autorización declarativa mediante anotaciones como \texttt{@PreAuthorize}, permitiendo proteger endpoints de la API según el rol del usuario autenticado. La inyección de dependencias de Spring facilita el testing unitario y la modularidad del código.
+
+\subsection{Spring Data JPA e Hibernate}
+
+Spring Data JPA es una abstracción sobre JPA (Java Persistence API) que simplifica el acceso a datos relacionales mediante interfaces de repositorio. Hibernate, como implementación de JPA, realiza el mapeo objeto-relacional (ORM) entre las entidades Java y las tablas de la base de datos, gestionando automáticamente las consultas SQL, las relaciones entre entidades y las transacciones ACID.
+
+\subsection{PostgreSQL}
+
+PostgreSQL es un sistema de gestión de bases de datos relacional de código abierto reconocido por su robustez, extensibilidad y cumplimiento del estándar SQL. Su tipo de dato NUMERIC ofrece precisión arbitraria para operaciones monetarias, evitando los errores de redondeo que presentan los tipos de punto flotante. El soporte nativo de transacciones ACID garantiza la integridad de los datos en operaciones concurrentes.
+
+\subsection{JSON Web Tokens (JWT)}
+
+JSON Web Token (JWT), definido en la RFC 7519, es un estándar abierto para la transmisión segura de información entre partes como un objeto JSON firmado digitalmente. En el contexto de autenticación web, JWT permite implementar un esquema stateless donde el servidor no necesita almacenar sesiones, ya que toda la información necesaria para verificar la identidad del usuario se encuentra contenida en el token firmado.
+
+\section{Metodología Ágil Scrum}
+
+Scrum es un marco de trabajo ágil diseñado para desarrollar productos complejos de manera iterativa e incremental. Según la Guía Scrum de Schwaber y Sutherland (2020), Scrum se fundamenta en tres pilares: transparencia, inspección y adaptación. El trabajo se organiza en ciclos cortos denominados sprints, típicamente de dos a cuatro semanas, durante los cuales el equipo entrega un incremento de producto potencialmente utilizable.
+
+Los artefactos principales de Scrum incluyen el Product Backlog (lista priorizada de requisitos), el Sprint Backlog (tareas del sprint actual) y el Incremento (producto funcional al final de cada sprint). Las ceremonias incluyen la planificación del sprint, las reuniones diarias, la revisión del sprint y la retrospectiva.
+
+\section{Arquitectura Monolítica Modular}
+
+La arquitectura monolítica modular organiza el código fuente en módulos funcionales cohesivos dentro de una única aplicación desplegable. A diferencia de la arquitectura monolítica tradicional organizada por capas técnicas, la organización por módulo agrupa todas las capas (controlador, servicio, repositorio, entidad) dentro de cada funcionalidad de negocio.
+
+Este enfoque ofrece las ventajas de simplicidad en el despliegue y la depuración propias del monolito, combinadas con la separación de responsabilidades y la mantenibilidad que proporciona la modularización. Para el contexto de ProFact, donde el equipo de desarrollo es reducido y el sistema tiene un alcance definido, esta arquitectura resulta la más adecuada.
+
+\section{Clean Code}
+
+Clean Code, término popularizado por Martin (2008), se refiere a un conjunto de principios y prácticas que buscan producir código legible, mantenible y libre de duplicación. Entre los principios fundamentales se encuentran: funciones que realizan una sola tarea, nombres que revelan la intención del código, máximo tres parámetros por función, y comentarios únicamente cuando el código no puede explicarse por sí solo.
+
+En el proyecto ProFact se aplican estos principios mediante el uso de DTOs (Data Transfer Objects) para separar la representación interna de las entidades de su exposición a través de la API, excepciones personalizadas con mensajes descriptivos en español, y una convención estricta de nomenclatura que diferencia entre camelCase para variables y métodos, PascalCase para clases y componentes, y snake\_case para tablas y columnas de la base de datos.
+
+
+% ============================================================
+%  CAPÍTULO 5 — METODOLOGÍA
+% ============================================================
+\chapter{Metodología}
+
+\section{Tipo de Investigación}
+
+El presente proyecto se enmarca dentro de la investigación aplicada con enfoque descriptivo, orientada a resolver un problema concreto identificado en el sector comercial de las microempresas ecuatorianas. Se adopta la estrategia de caso de estudio, donde se analiza la problemática de gestión de inventarios, compras y ventas en negocios pequeños para diseñar e implementar una solución tecnológica que atienda las necesidades detectadas durante el levantamiento de requerimientos.
+
+\section{Marco de Trabajo: Scrum}
+
+Para la gestión del proyecto se selecciona Scrum como marco de trabajo ágil. Esta decisión se fundamenta en las siguientes razones: (a) el alcance del proyecto requiere entregas incrementales que permitan validar funcionalidades con el Product Owner al finalizar cada sprint; (b) el equipo de desarrollo es pequeño (dos integrantes), lo que se alinea con la filosofía de equipos reducidos y autoorganizados de Scrum; (c) los requisitos del sistema se han priorizado en el Product Backlog, lo que facilita la planificación iterativa; y (d) la naturaleza académica del proyecto demanda evidencia de ceremonias y artefactos Scrum como parte de la evaluación.
+
+Se descarta la metodología en cascada (Waterfall) por su rigidez ante cambios de requisitos, y Kanban por no proporcionar la estructura de sprints y ceremonias que la asignatura requiere documentar.
+
+\section{Roles del Equipo Scrum}
+
+\begin{table}[H]
+\centering
+\caption{Roles del equipo Scrum}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|l|}
+\hline
+\textbf{Rol} & \textbf{Responsabilidad} & \textbf{Integrante} \\ \hline
+Product Owner & Define y prioriza el backlog, aprueba entregas en Sprint Review & Allen Mero \\ \hline
+Scrum Master & Facilita ceremonias, elimina impedimentos, asegura el cumplimiento de Scrum & Francisco Lanche \\ \hline
+Development Team & Diseño, desarrollo y pruebas de cada sprint & Allen Mero / Francisco Lanche \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Artefactos}
+
+\subsection{Levantamiento de Requerimientos}
+
+El levantamiento de requerimientos se realiza mediante entrevistas semiestructuradas y observación directa de los procesos operativos en microempresas del sector comercial. Se identifican dos perfiles de usuario (Administrador y Empleado) y se documentan los requerimientos funcionales y no funcionales que definen el alcance del sistema. Los resultados completos se presentan en los Anexos A y B.
+
+\subsection{Requerimientos Funcionales}
+
+La Tabla~\ref{tab:rf-admin} presenta los requerimientos funcionales del rol Administrador y la Tabla~\ref{tab:rf-emp} los del rol Empleado.
+
+\begin{table}[H]
+\centering
+\caption{Requerimientos funcionales — Rol Administrador}
+\label{tab:rf-admin}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|c|X|}
+\hline
+\textbf{Tipo} & \textbf{ID} & \textbf{Descripción} \\ \hline
+\multirow{8}{*}{\rotatebox{90}{Sistema Web}} & RF-001 & Como administrador, quiero iniciar y cerrar sesión con mis credenciales, para acceder de forma segura al sistema y proteger la información del negocio. \\ \cline{2-3}
+ & RF-002 & Como administrador, quiero crear, editar y desactivar usuarios asignándoles un rol específico, para controlar quién accede a cada módulo del sistema. \\ \cline{2-3}
+ & RF-003 & Como administrador, quiero registrar y gestionar categorías de productos, para organizar el catálogo de inventario de manera estructurada. \\ \cline{2-3}
+ & RF-004 & Como administrador, quiero registrar productos con código único, stock mínimo y precio de venta, para mantener el inventario actualizado y recibir alertas cuando el stock llegue al nivel crítico. \\ \cline{2-3}
+ & RF-005 & Como administrador, quiero realizar ajustes manuales de stock indicando el motivo del ajuste, para corregir inconsistencias generadas por pérdidas, daños o consumo interno. \\ \cline{2-3}
+ & RF-006 & Como administrador, quiero gestionar proveedores y registrar órdenes de compra con generación de factura PDF, para mantener un historial de abastecimiento confiable. \\ \cline{2-3}
+ & RF-007 & Como administrador, quiero visualizar un dashboard con gráficos de ventas, ingresos, egresos y productos con bajo stock, para tomar decisiones estratégicas. \\ \cline{2-3}
+ & RF-008 & Como administrador, quiero exportar reportes de ventas y compras en PDF y Excel, para analizar el desempeño del negocio en herramientas externas. \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Requerimientos funcionales — Rol Empleado}
+\label{tab:rf-emp}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|c|X|}
+\hline
+\textbf{Tipo} & \textbf{ID} & \textbf{Descripción} \\ \hline
+\multirow{6}{*}{\rotatebox{90}{Sistema Web}} & RF-E01 & Como empleado, quiero iniciar sesión con mis credenciales, para acceder únicamente a los módulos autorizados para mi rol. \\ \cline{2-3}
+ & RF-E02 & Como empleado, quiero consultar el listado de productos con su stock disponible, para verificar la existencia de un artículo antes de confirmar una venta. \\ \cline{2-3}
+ & RF-E03 & Como empleado, quiero registrar una venta seleccionando el cliente, los productos y las cantidades, para generar la factura correspondiente y actualizar el stock automáticamente. \\ \cline{2-3}
+ & RF-E04 & Como empleado, quiero aplicar un descuento y seleccionar el tipo de pago, para registrar correctamente la transacción. \\ \cline{2-3}
+ & RF-E05 & Como empleado, quiero buscar un cliente por nombre o RUC, para agilizar el proceso de facturación. \\ \cline{2-3}
+ & RF-E06 & Como empleado, quiero generar e imprimir la factura PDF de una venta, para entregar el comprobante al cliente. \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Requerimientos No Funcionales}
+
+\begin{table}[H]
+\centering
+\caption{Requerimientos no funcionales del sistema}
+\label{tab:rnf}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|l|X|}
+\hline
+\textbf{ID} & \textbf{Categoría} & \textbf{Descripción} \\ \hline
+RNF-001 & Seguridad & Contraseñas con hash bcrypt factor mínimo 10; nunca en texto plano. \\ \hline
+RNF-002 & Seguridad & Todas las rutas protegidas con JWT HS256. Sin token válido retorna HTTP 401. \\ \hline
+RNF-003 & Seguridad & Bloqueo de 10 minutos tras 3 intentos fallidos consecutivos de login. \\ \hline
+RNF-004 & Rendimiento & Tiempo de respuesta de la API $<$ 1\,000 ms bajo carga de hasta 10 usuarios concurrentes. \\ \hline
+RNF-005 & Rendimiento & Frontend carga en $<$ 3 segundos en conexión de 10 Mbps. \\ \hline
+RNF-006 & Rendimiento & Operaciones de venta y actualización de stock $<$ 2\,000 ms en transacción atómica. \\ \hline
+RNF-007 & Usabilidad & Un empleado sin capacitación debe completar una venta en $<$ 3 minutos. \\ \hline
+RNF-008 & Usabilidad & Mensajes de error en español con descripción del problema y acción correctiva. \\ \hline
+RNF-009 & Disponibilidad & 99\% de disponibilidad en horario laboral 08:00--20:00 lunes a sábado. \\ \hline
+RNF-010 & Portabilidad & Funcional en Chrome v110+ y Firefox v110+ en resolución mínima 1280$\times$720. \\ \hline
+RNF-011 & Mantenibilidad & Código sin errores de linting (ESLint para TS, Checkstyle para Java). \\ \hline
+RNF-012 & Mantenibilidad & Arquitectura modular: nuevos módulos sin modificar los existentes. \\ \hline
+RNF-013 & Escalabilidad & Soporte de 10.000 registros en ventas/productos sin degradación de rendimiento. \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Historias de Usuario}
+
+Las historias de usuario se redactan siguiendo el formato \textit{Como [rol], quiero [acción], para [beneficio]} e incluyen criterios de aceptación verificables. Las tarjetas completas de cada historia de usuario se presentan en el Anexo~C. A continuación se resumen las historias organizadas por sprint.
+
+\textbf{Sprint 1 — Autenticación y Gestión de Acceso:} HU-001 (Inicio y cierre de sesión), HU-002 (Gestión de usuarios), HU-003 (Gestión de categorías), HU-008 (Gestión del perfil personal) y HU-009 (Control de sesión automático).
+
+\textbf{Sprint 2 — Módulo de Inventario:} HU-004 (Registro de productos), HU-005 (Ajuste manual de stock), HU-006 (Alerta visual de stock mínimo), HU-007 (Historial de movimientos) y HU-010 (Gestión de proveedores).
+
+\textbf{Sprint 3 — Módulo de Compras:} HU-011 (Registro de órdenes de compra) y HU-012 (Devoluciones a proveedor).
+
+\textbf{Sprint 4 — Módulo de Ventas y Reportes:} HU-013 (Gestión de clientes), HU-014 (Registro de ventas con factura PDF) y HU-015 (Dashboard de reportes dinámicos).
+
+\subsection{Product Backlog}
+
+\begin{table}[H]
+\centering
+\caption{Product Backlog del proyecto ProFact}
+\label{tab:pb}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|l|X|c|c|}
+\hline
+\textbf{ID} & \textbf{Historia de Usuario} & \textbf{Prioridad} & \textbf{Iteración} \\ \hline
+HU-001 & Inicio y cierre de sesión & Alta & 1 \\ \hline
+HU-002 & Gestión de usuarios (CRUD + roles) & Alta & 1 \\ \hline
+HU-003 & Gestión de categorías de productos & Media & 1 \\ \hline
+HU-008 & Gestión del perfil personal & Media & 1 \\ \hline
+HU-009 & Control de sesión y cierre automático & Media & 1 \\ \hline
+HU-004 & Registro de productos en inventario & Alta & 2 \\ \hline
+HU-005 & Ajuste manual de stock con trazabilidad & Alta & 2 \\ \hline
+HU-006 & Alerta visual de stock mínimo & Media & 2 \\ \hline
+HU-007 & Historial de movimientos de inventario & Media & 2 \\ \hline
+HU-010 & Gestión de proveedores & Alta & 2 \\ \hline
+HU-011 & Registro de órdenes de compra con factura PDF & Alta & 3 \\ \hline
+HU-012 & Devoluciones a proveedor & Media & 3 \\ \hline
+HU-013 & Gestión de clientes con crédito & Alta & 4 \\ \hline
+HU-014 & Registro de ventas y generación de factura PDF & Alta & 4 \\ \hline
+HU-015 & Dashboard de reportes dinámicos & Alta & 4 \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Sprint Backlog}
+
+\begin{longtable}{|c|p{3cm}|c|p{6cm}|c|}
+\caption{Sprint Backlog del proyecto ProFact} \label{tab:sb} \\
+\hline
+\textbf{ID} & \textbf{Nombre} & \textbf{HU} & \textbf{Tareas} & \textbf{Tiempo} \\ \hline
+\endfirsthead
+\hline
+\textbf{ID} & \textbf{Nombre} & \textbf{HU} & \textbf{Tareas} & \textbf{Tiempo} \\ \hline
+\endhead
+S0 & Configuración del entorno & N/A & Estructura del proyecto backend (API, controladores, entidades). \newline Modelo de base de datos y relaciones. \newline Estructura del proyecto frontend (componentes, rutas, servicios). & 20H \\ \hline
+S1 & Módulo de autenticación y seguridad & HU-001 \newline HU-002 \newline HU-003 \newline HU-008 \newline HU-009 & \textbf{Backend:} Endpoint de login con JWT, lógica de bloqueo tras 3 intentos, CRUD de usuarios con validación de email único, CRUD de categorías. \newline \textbf{Frontend:} Pantalla de login, formulario de registro/edición de usuarios, listado con filtros, gestión de categorías. & 40H \\ \hline
+S2 & Módulo de inventario & HU-004 \newline HU-005 \newline HU-006 \newline HU-007 \newline HU-010 & \textbf{Backend:} CRUD de productos con precios duales (compra/venta), alertas de stock bajo, endpoints de proveedores con validación. \newline \textbf{Frontend:} Listado de productos con indicador de stock bajo, formulario con campos de precio de compra y venta, gestión de proveedores. & 50H \\ \hline
+S3 & Módulo de compras & HU-011 \newline HU-012 & \textbf{Backend:} Endpoints de registro y edición de compras con actualización automática de stock, reversión de stock en edición, cálculo de IVA dinámico. \newline \textbf{Frontend:} Formulario de compras con creación en línea de proveedores/productos, modal de edición de compras. & 50H \\ \hline
+S4 & Módulo de ventas y reportes & HU-013 \newline HU-014 \newline HU-015 & \textbf{Backend:} CRUD de clientes, endpoints de ventas con validación de stock, edición con reversión, dashboard de métricas, endpoints de reportes. \newline \textbf{Frontend:} Formulario de ventas con generación de factura PDF (jsPDF), creación de clientes en línea, dashboard con gráficos Recharts, filtros semanal/mensual/anual. & 60H \\ \hline
+S5 & Pruebas y seguridad & N/A & Pruebas funcionales y de validación. Protección de endpoints con roles. Prevención de SQL injection. Documentación. & 20H \\ \hline
+\multicolumn{4}{|r|}{\textbf{TOTAL}} & \textbf{240H} \\ \hline
+\end{longtable}
+
+\subsection{Definition of Done (DoD)}
+
+\begin{table}[H]
+\centering
+\caption{Criterios universales del Definition of Done}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Categoría} & \textbf{Criterio} & \textbf{Evidencia} \\ \hline
+Gestión & Historia movida a ``Done'' en Jira & Captura del tablero Jira \\ \hline
+Pruebas & Prueba funcional ejecutada y aprobada & Tabla de pruebas del informe \\ \hline
+Validación & Product Owner aprobó en Sprint Review & Acta firmada o captura en Jira \\ \hline
+Código & Subido a GitHub con commit descriptivo referenciando la HU & Link al commit \\ \hline
+Calidad & Sin errores en consola del navegador ni en logs del servidor & Captura del sistema sin errores \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Criterios condicionales del Definition of Done}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Categoría} & \textbf{Condición} & \textbf{Criterio} \\ \hline
+Interfaz & Si la HU tiene componentes visuales & Interfaz corresponde al mockup aprobado \\ \hline
+Compatibilidad & Si tiene componentes visuales & Probado en Chrome y Firefox v110+ \\ \hline
+Datos & Si involucra creación/edición/eliminación & Persistencia verificada en la base de datos \\ \hline
+Seguridad & Si implica rutas protegidas & Retorna 401 ante petición sin JWT \\ \hline
+Documentación & Si genera funcionalidad visible al usuario & Manual de usuario actualizado \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Diseño de Interfaces (Mockups)}
+
+Los prototipos de interfaz se diseñan utilizando Google Stitch y Figma, cubriendo las pantallas principales de cada módulo del sistema. La Tabla~\ref{tab:mockups} resume las pantallas diseñadas. Las capturas de los mockups se presentan en el Anexo~F.
+
+\begin{table}[H]
+\centering
+\caption{Pantallas de interfaz diseñadas}
+\label{tab:mockups}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|c|l|X|}
+\hline
+\textbf{\#} & \textbf{Módulo} & \textbf{Pantalla} \\ \hline
+1 & Auth & Login con campo email, contraseña y botón Ingresar \\ \hline
+2 & Dashboard & Vista administrador con KPI cards y gráficos \\ \hline
+3 & Dashboard & Vista empleado con acceso restringido \\ \hline
+4--5 & Usuarios & Listado + formulario de creación/edición \\ \hline
+6--9 & Inventario & Listado + formulario + ajuste de stock + stock crítico \\ \hline
+10--14 & Compras & Proveedores + orden de compra + historial + edición \\ \hline
+15--19 & Ventas & Clientes + facturación + historial + factura PDF \\ \hline
+20 & Reportes & Dashboard con gráficos comparativos y filtros \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Arquitectura del Sistema}
+
+\subsection{Arquitectura General: Cliente-Servidor Desacoplado}
+
+ProFact emplea una arquitectura cliente-servidor desacoplada donde el frontend (React + Vite) se comunica con el backend (Spring Boot) exclusivamente a través de una API REST que intercambia datos en formato JSON. Esta separación permite desarrollar, probar y desplegar cada componente de forma independiente.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Diagrama de arquitectura cliente-servidor — React $\rightarrow$ REST API (HTTP/JSON) $\rightarrow$ Spring Boot $\rightarrow$ PostgreSQL]}\vspace{3cm}}}
+\caption{Arquitectura general del sistema ProFact}
+\label{fig:arq-general}
+\end{figure}
+
+\subsection{Arquitectura de Software: Monolítica Modular}
+
+El backend se organiza por funcionalidad (módulo) siguiendo una estructura de paquetes clara:
+
+\begin{lstlisting}[language={},caption={Estructura del backend}]
+backend/src/main/java/com/binasystem/profact/
+|-- config/         (CorsConfig, SecurityConfig, DataInitializer)
+|-- controller/     (11 controladores REST)
+|-- dto/            (21 DTOs de request/response)
+|-- entity/         (10 entidades JPA)
+|-- enums/          (Rol: ADMIN, VENDEDOR)
+|-- exception/      (7 excepciones + GlobalExceptionHandler)
+|-- repository/     (10 repositorios Spring Data)
+|-- security/       (JwtAuthFilter, JwtUtil, UserDetailsServiceImpl)
+|-- service/        (10 servicios de logica de negocio)
+\end{lstlisting}
+
+El frontend sigue una organización modular equivalente:
+
+\begin{lstlisting}[language={},caption={Estructura del frontend}]
+frontend/src/
+|-- core/
+|   |-- api/         (Cliente HTTP con JWT)
+|   |-- components/  (Modal reutilizable)
+|   |-- context/     (AuthContext)
+|   |-- layouts/     (DashboardLayout, LandingLayout)
+|   |-- router/      (AppRouter con rutas publicas/privadas)
+|-- modules/
+|   |-- landing/     (Pagina publica: Inicio, Nosotros, Planes)
+|   |-- dashboard/   (Paginas privadas: 10 modulos)
+\end{lstlisting}
+
+\subsection{Patrón por Capas dentro del Módulo}
+
+Cada funcionalidad del backend sigue el patrón de capas: Controller $\rightarrow$ Service $\rightarrow$ Repository $\rightarrow$ Entity. El Controller solo maneja request/response HTTP, el Service contiene toda la lógica de negocio, y el Repository accede a la base de datos mediante Spring Data JPA.
+
+\subsection{Arquitectura de Datos}
+
+El modelo relacional del sistema contempla 10 entidades principales con las siguientes relaciones:
+
+\begin{table}[H]
+\centering
+\caption{Entidades y relaciones del modelo de datos}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Relación} & \textbf{Descripción} \\ \hline
+Categorías (1) -- (N) Productos & Cada producto pertenece a una categoría \\ \hline
+Productos (1) -- (N) DetallesCompra & Un producto puede aparecer en múltiples compras \\ \hline
+Productos (1) -- (N) DetallesVenta & Un producto puede aparecer en múltiples ventas \\ \hline
+Proveedores (1) -- (N) Compras & Cada compra está asociada a un proveedor \\ \hline
+Compras (1) -- (N) DetallesCompra & Cada compra contiene múltiples líneas de detalle \\ \hline
+Clientes (1) -- (N) Ventas & Cada venta está asociada a un cliente \\ \hline
+Ventas (1) -- (N) DetallesVenta & Cada venta contiene múltiples líneas de detalle \\ \hline
+Usuarios (1) -- (N) Ventas & Cada venta es registrada por un usuario \\ \hline
+Usuarios (1) -- (N) Compras & Cada compra es registrada por un usuario \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Diagrama lógico de la base de datos con las 10 entidades y sus relaciones]}\vspace{3cm}}}
+\caption{Modelo relacional de la base de datos ProFact}
+\label{fig:modelo-datos}
+\end{figure}
+
+\section{Herramientas de Desarrollo}
+
+\begin{table}[H]
+\centering
+\caption{Herramientas de desarrollo utilizadas en el proyecto}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|l|c|X|}
+\hline
+\textbf{Categoría} & \textbf{Herramienta} & \textbf{Versión} & \textbf{Propósito} \\ \hline
+Frontend & React & 19.x & Framework de interfaz de usuario \\ \hline
+Frontend & TypeScript & 6.x & Tipado estático para JavaScript \\ \hline
+Frontend & Vite & 8.x & Build tool y servidor de desarrollo \\ \hline
+Frontend & React Router & 7.x & Enrutamiento del lado del cliente \\ \hline
+Frontend & Recharts & 3.x & Gráficos y visualización de datos \\ \hline
+Frontend & jsPDF & 4.x & Generación de facturas en PDF \\ \hline
+Backend & Java & 17 & Lenguaje de programación del servidor \\ \hline
+Backend & Spring Boot & 3.x & Framework empresarial Java \\ \hline
+Backend & Spring Security & 6.x & Autenticación y autorización JWT \\ \hline
+Backend & Spring Data JPA & 3.x & ORM y acceso a datos \\ \hline
+Base de Datos & H2 / PostgreSQL & --- & Motor de base de datos relacional \\ \hline
+Versiones & Git + GitHub & --- & Control de versiones colaborativo \\ \hline
+Gestión & Jira & Cloud & Tablero Scrum y seguimiento \\ \hline
+IDE & VS Code / IntelliJ & --- & Entorno de desarrollo integrado \\ \hline
+Pruebas API & Postman & --- & Validación de endpoints REST \\ \hline
+Prototipado & Google Stitch / Figma & Cloud & Diseño de mockups de interfaz \\ \hline
+\end{tabularx}
+\end{table}
+
+
+% ============================================================
+%  CAPÍTULO 6 — RESULTADOS
+% ============================================================
+\chapter{Resultados}
+
+\section{Definition of Done --- Aplicación en el Proyecto}
+
+El Definition of Done (DoD) se aplica de manera consistente a lo largo de todos los sprints del proyecto. Cada historia de usuario se considera terminada únicamente cuando cumple los cinco criterios universales definidos (gestión en Jira, prueba funcional aprobada, validación del Product Owner, código en GitHub y ausencia de errores). Los criterios condicionales se verifican según la naturaleza de cada historia. Este enfoque garantiza un estándar de calidad uniforme en todas las entregas incrementales.
+
+\section{Resultados por Sprint}
+
+\subsection{Sprint 0 --- Configuración del Entorno}
+
+\begin{table}[H]
+\centering
+\caption{Tareas completadas en Sprint 0}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|X|c|}
+\hline
+\textbf{Tarea} & \textbf{Estado} \\ \hline
+Crear repositorio GitHub con estructura de carpetas & Completado \\ \hline
+Configurar entorno: Java 17, Node.js 20, H2/PostgreSQL & Completado \\ \hline
+Crear base de datos ProFact con esquema inicial (10 entidades) & Completado \\ \hline
+Diseñar mockups de HU-001, HU-004 y HU-011 & Completado \\ \hline
+Redactar y validar Product Backlog con el equipo & Completado \\ \hline
+Configurar tablero Jira y agregar colaboradores & Completado \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Sprint 1 --- Autenticación y Gestión de Acceso}
+
+\begin{table}[H]
+\centering
+\caption{Resultados del Sprint 1}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|X|c|}
+\hline
+\textbf{HU} & \textbf{Funcionalidad entregada} & \textbf{Estado} \\ \hline
+HU-001 & Login con JWT, bloqueo tras 3 intentos fallidos, redirección según rol & Completado \\ \hline
+HU-002 & CRUD de usuarios con validación de email único, filtros por rol y estado & Completado \\ \hline
+HU-003 & CRUD de categorías con validación de nombre único & Completado \\ \hline
+HU-008 & Edición de perfil personal con cambio de contraseña & Completado \\ \hline
+HU-009 & Expiración automática de token JWT y redirección al login & Completado \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura del sistema --- Pantalla de login]}\vspace{3cm}}}
+\caption{Pantalla de inicio de sesión del sistema ProFact}
+\label{fig:sprint1-login}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura del sistema --- Gestión de usuarios]}\vspace{3cm}}}
+\caption{Módulo de gestión de usuarios}
+\label{fig:sprint1-usuarios}
+\end{figure}
+
+\subsection{Sprint 2 --- Módulo de Inventario}
+
+\begin{table}[H]
+\centering
+\caption{Resultados del Sprint 2}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|X|c|}
+\hline
+\textbf{HU} & \textbf{Funcionalidad entregada} & \textbf{Estado} \\ \hline
+HU-004 & Registro de productos con precios de compra y venta diferenciados, stock mínimo & Completado \\ \hline
+HU-005 & Ajuste manual de stock con historial de cambios & Completado \\ \hline
+HU-006 & Indicador visual (badge) de stock bajo en listado y dashboard & Completado \\ \hline
+HU-007 & Historial de movimientos por producto con filtros & Completado \\ \hline
+HU-010 & CRUD de proveedores con datos de contacto & Completado \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura del sistema --- Inventario de productos con alerta de stock bajo]}\vspace{3cm}}}
+\caption{Módulo de inventario con indicadores de stock bajo}
+\label{fig:sprint2-inventario}
+\end{figure}
+
+\subsection{Sprint 3 --- Módulo de Compras}
+
+\begin{table}[H]
+\centering
+\caption{Resultados del Sprint 3}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|X|c|}
+\hline
+\textbf{HU} & \textbf{Funcionalidad entregada} & \textbf{Estado} \\ \hline
+HU-011 & Registro de compras con selección de proveedor, productos, precios de compra y venta, cálculo de IVA dinámico, actualización automática de stock & Completado \\ \hline
+HU-012 & Edición de compras con reversión automática de stock y recálculo de totales & Completado \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura del sistema --- Formulario de registro de compra]}\vspace{3cm}}}
+\caption{Módulo de compras --- Registro de orden de compra}
+\label{fig:sprint3-compras}
+\end{figure}
+
+\subsection{Sprint 4 --- Módulo de Ventas y Reportes}
+
+\begin{table}[H]
+\centering
+\caption{Resultados del Sprint 4}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|c|X|c|}
+\hline
+\textbf{HU} & \textbf{Funcionalidad entregada} & \textbf{Estado} \\ \hline
+HU-013 & CRUD de clientes con identificación, teléfono, dirección y email & Completado \\ \hline
+HU-014 & Registro de ventas con selección de cliente y productos, generación de factura PDF con jsPDF, edición con reversión de stock & Completado \\ \hline
+HU-015 & Dashboard de reportes con gráficos Recharts (barras, líneas, áreas, pastel), filtros semanal/mensual/anual, KPIs de ingresos y egresos & Completado \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura del sistema --- Factura PDF generada]}\vspace{3cm}}}
+\caption{Factura PDF generada por el módulo de ventas}
+\label{fig:sprint4-factura}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura del sistema --- Dashboard de reportes con gráficos]}\vspace{3cm}}}
+\caption{Dashboard de reportes dinámicos}
+\label{fig:sprint4-reportes}
+\end{figure}
+
+\section{Pruebas}
+
+\subsection{Pruebas Funcionales}
+
+\begin{table}[H]
+\centering
+\caption{Prueba funcional PF-001 --- Login exitoso}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PF-001 \\ \hline
+\textbf{Tipo} & Funcional \\ \hline
+\textbf{Nombre} & Login exitoso con credenciales válidas \\ \hline
+\textbf{HU Relacionada} & HU-001 \\ \hline
+\textbf{Objetivo} & Verificar que un usuario con credenciales válidas puede iniciar sesión correctamente \\ \hline
+\textbf{Precondiciones} & Usuario registrado con email \texttt{admin@profact.com} y contraseña válida \\ \hline
+\textbf{Pasos} & 1. Acceder a la pantalla de login \newline 2. Ingresar email y contraseña \newline 3. Hacer clic en ``Ingresar'' \\ \hline
+\textbf{Resultado Esperado} & El sistema redirige al dashboard según el rol del usuario \\ \hline
+\textbf{Resultado Obtenido} & El sistema redirige correctamente al dashboard de administrador \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Evidencia PF-001 --- Login exitoso]}\vspace{2cm}}}
+\caption{Evidencia de prueba PF-001}
+\label{fig:pf001}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Prueba funcional PF-002 --- Creación de usuario}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PF-002 \\ \hline
+\textbf{Tipo} & Funcional \\ \hline
+\textbf{Nombre} & Creación exitosa de usuario con rol empleado \\ \hline
+\textbf{HU Relacionada} & HU-002 \\ \hline
+\textbf{Objetivo} & Verificar que el administrador puede crear un nuevo usuario con rol empleado \\ \hline
+\textbf{Precondiciones} & Sesión iniciada como administrador \\ \hline
+\textbf{Pasos} & 1. Navegar al módulo de usuarios \newline 2. Hacer clic en ``Nuevo Usuario'' \newline 3. Completar el formulario con datos válidos \newline 4. Seleccionar rol ``Empleado'' \newline 5. Hacer clic en ``Guardar'' \\ \hline
+\textbf{Resultado Esperado} & El usuario aparece en el listado con rol Empleado \\ \hline
+\textbf{Resultado Obtenido} & El usuario se crea correctamente y aparece en el listado \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Prueba funcional PF-005 --- Registro de venta actualiza stock}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PF-005 \\ \hline
+\textbf{Tipo} & Funcional \\ \hline
+\textbf{Nombre} & Registro de venta actualiza stock automáticamente \\ \hline
+\textbf{HU Relacionada} & HU-014 \\ \hline
+\textbf{Objetivo} & Verificar que al registrar una venta, el stock del producto se reduce automáticamente \\ \hline
+\textbf{Precondiciones} & Producto con stock $\geq$ 5 unidades, cliente registrado \\ \hline
+\textbf{Pasos} & 1. Navegar al módulo de ventas \newline 2. Seleccionar cliente \newline 3. Agregar producto con cantidad 3 \newline 4. Hacer clic en ``Registrar Venta'' \newline 5. Verificar stock en inventario \\ \hline
+\textbf{Resultado Esperado} & Stock del producto se reduce en 3 unidades \\ \hline
+\textbf{Resultado Obtenido} & Stock se reduce correctamente de forma atómica \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Evidencia PF-005 --- Stock actualizado tras venta]}\vspace{2cm}}}
+\caption{Evidencia de prueba PF-005}
+\label{fig:pf005}
+\end{figure}
+
+\subsection{Pruebas de Validación}
+
+\begin{table}[H]
+\centering
+\caption{Prueba de validación PV-001 --- Credenciales incorrectas}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PV-001 \\ \hline
+\textbf{Tipo} & Validación \\ \hline
+\textbf{Nombre} & Credenciales incorrectas muestran mensaje genérico \\ \hline
+\textbf{HU Relacionada} & HU-001 \\ \hline
+\textbf{Objetivo} & Verificar que el sistema no revela si el error es en el email o la contraseña \\ \hline
+\textbf{Precondiciones} & Pantalla de login cargada \\ \hline
+\textbf{Pasos} & 1. Ingresar email incorrecto y contraseña cualquiera \newline 2. Hacer clic en ``Ingresar'' \\ \hline
+\textbf{Resultado Esperado} & Mensaje ``Credenciales inválidas'' sin especificar el campo \\ \hline
+\textbf{Resultado Obtenido} & Se muestra el mensaje genérico correctamente \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Prueba de validación PV-005 --- Stock insuficiente}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PV-005 \\ \hline
+\textbf{Tipo} & Validación \\ \hline
+\textbf{Nombre} & Stock insuficiente impide la venta \\ \hline
+\textbf{HU Relacionada} & HU-014 \\ \hline
+\textbf{Objetivo} & Verificar que el sistema impide vender más unidades de las disponibles \\ \hline
+\textbf{Precondiciones} & Producto con stock = 2 unidades \\ \hline
+\textbf{Pasos} & 1. Intentar registrar venta con cantidad 5 del producto \newline 2. Hacer clic en ``Registrar Venta'' \\ \hline
+\textbf{Resultado Esperado} & Mensaje de error indicando stock insuficiente \\ \hline
+\textbf{Resultado Obtenido} & El sistema muestra ``Stock insuficiente para [producto]. Disponible: 2, Solicitado: 5'' \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+\subsection{Pruebas de Aceptación}
+
+\begin{table}[H]
+\centering
+\caption{Prueba de aceptación PA-001}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PA-001 \\ \hline
+\textbf{Nombre} & Aceptación del módulo de autenticación --- Sprint Review Sprint 1 \\ \hline
+\textbf{Resultado} & El Product Owner valida que las funcionalidades de login, gestión de usuarios y categorías cumplen con los criterios de aceptación definidos en las historias de usuario. \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Prueba de aceptación PA-002}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{ID} & PA-002 \\ \hline
+\textbf{Nombre} & Aceptación del sistema completo --- Sprint Review Sprint 4 \\ \hline
+\textbf{Resultado} & El Product Owner valida el funcionamiento integral del sistema: inventario, compras, ventas, reportes, generación de facturas PDF y edición de transacciones con reversión de stock. \\ \hline
+\textbf{Estado} & \textbf{APROBADO} \\ \hline
+\end{tabularx}
+\end{table}
+
+
+% ============================================================
+%  CAPÍTULO 7 — CONCLUSIONES
+% ============================================================
+\chapter{Conclusiones}
+
+\section{Conclusión OE1 --- Análisis de Requerimientos}
+
+En relación con el primer objetivo específico, se analizan los procesos actuales de gestión de inventario, compras y ventas en microempresas ecuatorianas mediante entrevistas semiestructuradas y observación directa. Como resultado, se identifican 8 requerimientos funcionales para el rol administrador, 6 para el rol empleado y 13 requerimientos no funcionales distribuidos en 7 categorías. Estos requerimientos constituyen la base para la definición de 15 historias de usuario que guían el desarrollo del sistema.
+
+\section{Conclusión OE2 --- Diseño de la Arquitectura}
+
+En relación con el segundo objetivo específico, se diseña una arquitectura cliente-servidor desacoplada que separa el frontend (React + TypeScript) del backend (Spring Boot + Java) mediante una API REST. El modelo de base de datos relacional contempla 10 entidades con relaciones correctamente normalizadas. Se elaboran 20 prototipos de interfaz que sirven como guía para la implementación visual del sistema, logrando una experiencia de usuario intuitiva y diferenciada por rol.
+
+\section{Conclusión OE3 --- Implementación de Módulos}
+
+En relación con el tercer objetivo específico, se implementan exitosamente los módulos de gestión de inventario (con precios duales de compra y venta), compras (con cálculo de IVA dinámico y reversión de stock en edición), ventas (con generación de facturas PDF mediante jsPDF), administración de usuarios (con control de acceso basado en roles JWT) y un dashboard de reportes dinámicos (con gráficos interactivos Recharts y filtros temporales). El sistema cuenta con 11 controladores REST, 10 servicios de lógica de negocio y 10 repositorios de acceso a datos.
+
+\section{Conclusión OE4 --- Validación del Sistema}
+
+En relación con el cuarto objetivo específico, se ejecutan pruebas funcionales, de validación y de aceptación que verifican el cumplimiento de los criterios de aceptación definidos en las historias de usuario. Se documentan 5 pruebas funcionales, 5 pruebas de validación y 2 pruebas de aceptación, todas con resultado aprobado. El sistema protege correctamente sus endpoints mediante JWT y control de acceso por roles, retornando HTTP 401 ante peticiones no autorizadas.
+
+\section{Conclusión OE5 --- Documentación}
+
+En relación con el quinto objetivo específico, se genera documentación técnica y de usuario que facilita la comprensión, el mantenimiento y la futura escalabilidad del sistema. El manual técnico incluye instrucciones de instalación, configuración de la base de datos y documentación de los 40+ endpoints de la API REST. El manual de usuario guía al administrador y al empleado en el uso de cada módulo del sistema.
+
+
+% ============================================================
+%  CAPÍTULO 8 — RECOMENDACIONES
+% ============================================================
+\chapter{Recomendaciones}
+
+\section{Mejoras Futuras del Sistema}
+
+\begin{itemize}
+    \item Desarrollar una aplicación móvil complementaria con React Native para permitir consultas de inventario y registro de ventas desde dispositivos móviles.
+    \item Integrar el sistema con el SRI (Servicio de Rentas Internas del Ecuador) para la emisión de facturación electrónica autorizada.
+    \item Incorporar analítica predictiva de demanda mediante algoritmos de machine learning que anticipen necesidades de reabastecimiento.
+    \item Añadir integración con plataformas de comercio electrónico para sincronizar el inventario con tiendas en línea.
+    \item Implementar KPIs avanzados con indicadores de rotación de inventario, margen de ganancia por producto y tendencias de ventas.
+\end{itemize}
+
+\section{Mantenimiento y Escalabilidad}
+
+\begin{itemize}
+    \item Configurar backups automáticos de la base de datos con periodicidad diaria y retención de 30 días.
+    \item Establecer un calendario de actualización de dependencias (Spring Boot, React, librerías de seguridad) para mantener el sistema protegido contra vulnerabilidades conocidas.
+    \item Migrar el despliegue a contenedores Docker para facilitar la portabilidad y la replicación del entorno.
+    \item Implementar un pipeline de CI/CD con GitHub Actions que ejecute pruebas automatizadas antes de cada despliegue.
+    \item Evaluar la migración a una arquitectura de microservicios cuando el volumen de transacciones supere las capacidades del monolito actual.
+\end{itemize}
+
+
+% ============================================================
+%  REFERENCIAS BIBLIOGRÁFICAS
+% ============================================================
+\chapter*{Referencias Bibliográficas}
+\addcontentsline{toc}{chapter}{Referencias Bibliográficas}
+
+\begin{enumerate}[label={[\arabic*]}]
+    \item Fielding, R. T. (2000). \textit{Architectural Styles and the Design of Network-based Software Architectures} (Tesis doctoral). University of California, Irvine.
+    \item Krajewski, L. J., Ritzman, L. P., y Malhotra, M. K. (2013). \textit{Administración de operaciones: Procesos y cadena de suministro} (10.ª ed.). Pearson Educación.
+    \item Laudon, K. C., y Laudon, J. P. (2020). \textit{Sistemas de información gerencial: Administración de la empresa digital} (16.ª ed.). Pearson Educación.
+    \item Martin, R. C. (2008). \textit{Clean Code: A Handbook of Agile Software Craftsmanship}. Prentice Hall.
+    \item Meta Platforms. (2024). \textit{React Documentation}. Recuperado de \url{https://react.dev/}
+    \item Microsoft. (2024). \textit{TypeScript Documentation}. Recuperado de \url{https://www.typescriptlang.org/docs/}
+    \item The PostgreSQL Global Development Group. (2024). \textit{PostgreSQL 16 Documentation}. Recuperado de \url{https://www.postgresql.org/docs/16/}
+    \item Schwaber, K., y Sutherland, J. (2020). \textit{La Guía Scrum: La Guía Definitiva de Scrum --- Las Reglas del Juego}. Scrum.org.
+    \item Spring. (2024). \textit{Spring Boot Reference Documentation}. Recuperado de \url{https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/}
+    \item Jones, M., Bradley, J., y Sakimura, N. (2015). JSON Web Token (JWT). \textit{RFC 7519}. Internet Engineering Task Force.
+\end{enumerate}
+
+
+% ============================================================
+%  ANEXOS
+% ============================================================
+\appendix
+
+% ── Anexo A — Requerimientos Funcionales ─────────────────────
+\chapter{Requerimientos Funcionales}
+
+Las tablas completas de requerimientos funcionales para los roles Administrador y Empleado se presentan en las Tablas~\ref{tab:rf-admin} y~\ref{tab:rf-emp} del Capítulo 5 (Metodología, sección 5.4.2).
+
+% ── Anexo B — Requerimientos No Funcionales ──────────────────
+\chapter{Requerimientos No Funcionales}
+
+La tabla completa de requerimientos no funcionales se presenta en la Tabla~\ref{tab:rnf} del Capítulo 5 (Metodología, sección 5.4.3).
+
+% ── Anexo C — Historias de Usuario ───────────────────────────
+\chapter{Historias de Usuario}
+
+\begin{table}[H]
+\centering
+\caption{HU-001 Inicio y cierre de sesión}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-001 & \textbf{Usuario:} Administrador y Empleado \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Inicio y cierre de sesión} \\ \hline
+\textbf{Prioridad para el negocio:} Alta & \textbf{Riesgo para desarrollo:} Medio \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Allen Mero} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como usuario del sistema, quiero iniciar sesión con mi correo y contraseña y cerrar sesión cuando termine mi jornada, para acceder de forma segura a las funcionalidades de mi rol.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Observación:} El administrador del sistema está habilitado como superusuario con registro permanente en la base de datos.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Credenciales inválidas retornan ``Credenciales inválidas'' sin especificar qué campo falla. \newline
+- Tras 3 intentos fallidos consecutivos: bloqueo de 10 minutos. \newline
+- Login exitoso redirige al dashboard según rol. \newline
+- Token JWT expira a las 8 horas y redirige al login. \newline
+- Logout invalida el token; reutilizarlo retorna HTTP 401.} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{HU-002 Gestión de usuarios (CRUD + roles)}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-002 & \textbf{Usuario:} Administrador \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Gestión de usuarios (CRUD + roles)} \\ \hline
+\textbf{Prioridad para el negocio:} Alta & \textbf{Riesgo para desarrollo:} Medio \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Francisco Lanche} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como administrador, quiero crear, editar, desactivar y asignar roles a los usuarios, para controlar quién accede al sistema.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Email único; duplicados rechazados con mensaje descriptivo. \newline
+- Roles disponibles: Administrador o Empleado. \newline
+- Desactivar un usuario cierra sus sesiones activas. \newline
+- Listado filtra por rol y estado (activo/inactivo).} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{HU-003 Gestión de categorías de productos}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-003 & \textbf{Usuario:} Administrador \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Gestión de categorías de productos} \\ \hline
+\textbf{Prioridad para el negocio:} Media & \textbf{Riesgo para desarrollo:} Bajo \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Allen Mero} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como administrador, quiero crear, editar y eliminar categorías de productos, para organizar el catálogo de inventario.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Nombre de categoría único. \newline
+- No se puede eliminar una categoría con productos asociados. \newline
+- La edición actualiza el nombre en todos los productos de esa categoría.} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{HU-004 Registro de productos en inventario}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-004 & \textbf{Usuario:} Administrador \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Registro de productos en inventario} \\ \hline
+\textbf{Prioridad para el negocio:} Alta & \textbf{Riesgo para desarrollo:} Alto \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Francisco Lanche} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como administrador, quiero registrar productos con código único, nombre, categoría, precio de compra, precio de venta, stock actual y stock mínimo, para mantener el catálogo actualizado y recibir alertas de stock crítico.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Código único; duplicados rechazados con mensaje descriptivo. \newline
+- Campos obligatorios vacíos impiden guardar. \newline
+- Producto aparece en el listado inmediatamente. \newline
+- Stock actual $\leq$ stock mínimo muestra alerta visual.} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{HU-010 Gestión de proveedores}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-010 & \textbf{Usuario:} Administrador \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Gestión de proveedores} \\ \hline
+\textbf{Prioridad para el negocio:} Alta & \textbf{Riesgo para desarrollo:} Medio \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Allen Mero} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como administrador, quiero registrar y gestionar proveedores con sus datos de contacto, para disponer de un directorio para órdenes de compra.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Campos: nombre, teléfono, correo, dirección. \newline
+- No se puede eliminar proveedor con órdenes asociadas. \newline
+- Historial de compras accesible desde la ficha del proveedor.} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{HU-014 Registro de ventas y generación de factura PDF}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-014 & \textbf{Usuario:} Administrador y Empleado \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Registro de ventas y generación de factura PDF} \\ \hline
+\textbf{Prioridad para el negocio:} Alta & \textbf{Riesgo para desarrollo:} Alto \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Francisco Lanche} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como usuario, quiero registrar una venta seleccionando el cliente, los productos y las cantidades, para generar la factura PDF correspondiente y actualizar el stock automáticamente.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Stock insuficiente impide la venta con mensaje descriptivo. \newline
+- Stock se reduce automáticamente al registrar la venta. \newline
+- Se genera factura PDF con logo, datos del cliente, detalle de productos, subtotal, IVA y total. \newline
+- La venta puede ser editada con reversión automática de stock.} \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{HU-015 Dashboard de reportes dinámicos}
+\begin{tabularx}{\textwidth}{|X X|}
+\hline
+\multicolumn{2}{|c|}{\textbf{HISTORIAS DE USUARIO}} \\ \hline
+\textbf{Identificador / ID:} HU-015 & \textbf{Usuario:} Administrador \\ \hline
+\multicolumn{2}{|l|}{\textbf{Nombre de la Historia:} Dashboard de reportes dinámicos} \\ \hline
+\textbf{Prioridad para el negocio:} Alta & \textbf{Riesgo para desarrollo:} Medio \\ \hline
+\multicolumn{2}{|l|}{\textbf{Desarrollador responsable:} Allen Mero} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Descripción:} Como administrador, quiero visualizar un dashboard con gráficos de ventas, ingresos, egresos y productos con bajo stock, para tomar decisiones estratégicas.} \\ \hline
+\multicolumn{2}{|p{0.95\textwidth}|}{\textbf{Criterios de aceptación:} \newline
+- Dashboard muestra KPIs de ventas del día, ventas del mes, compras del mes y productos con stock bajo. \newline
+- Gráficos interactivos con filtros semanal, mensual y anual. \newline
+- Comparativo visual de compras vs ventas. \newline
+- Solo accesible para el rol Administrador.} \\ \hline
+\end{tabularx}
+\end{table}
+
+\textit{Nota: Las historias de usuario restantes (HU-005, HU-006, HU-007, HU-008, HU-009, HU-011, HU-012, HU-013) siguen el mismo formato y se encuentran disponibles en el repositorio del proyecto.}
+
+% ── Anexo D — Product Backlog ────────────────────────────────
+\chapter{Product Backlog}
+
+El Product Backlog completo se presenta en la Tabla~\ref{tab:pb} del Capítulo 5 (Metodología, sección 5.4.5).
+
+% ── Anexo E — Sprint Backlogs ────────────────────────────────
+\chapter{Sprint Backlogs}
+
+El Sprint Backlog completo se presenta en la Tabla~\ref{tab:sb} del Capítulo 5 (Metodología, sección 5.4.6).
+
+% ── Anexo F — Diseño de Interfaces (Mockups) ─────────────────
+\chapter{Diseño de Interfaces --- Mockups}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Pantalla de Login]}\vspace{3cm}}}
+\caption{Mockup: Pantalla de inicio de sesión}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Dashboard del Administrador]}\vspace{3cm}}}
+\caption{Mockup: Dashboard del administrador}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Listado de Productos]}\vspace{3cm}}}
+\caption{Mockup: Listado de productos en inventario}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Formulario de Registro de Producto]}\vspace{3cm}}}
+\caption{Mockup: Formulario de registro de producto}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Gestión de Proveedores]}\vspace{3cm}}}
+\caption{Mockup: Gestión de proveedores}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Formulario de Orden de Compra]}\vspace{3cm}}}
+\caption{Mockup: Formulario de orden de compra}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Gestión de Clientes]}\vspace{3cm}}}
+\caption{Mockup: Gestión de clientes}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Pantalla de Facturación de Ventas]}\vspace{3cm}}}
+\caption{Mockup: Pantalla de facturación de ventas}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Dashboard de Reportes]}\vspace{3cm}}}
+\caption{Mockup: Dashboard de reportes}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Mockup --- Gestión de Usuarios]}\vspace{3cm}}}
+\caption{Mockup: Gestión de usuarios}
+\end{figure}
+
+% ── Anexo G — Diagrama Lógico de la Base de Datos ────────────
+\chapter{Diagrama Lógico de la Base de Datos}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{4cm}\textit{[Insertar imagen: Diagrama ER / lógico exportado desde pgAdmin, DBeaver o draw.io. Debe mostrar: tablas, atributos, PK, FK, cardinalidades para las 10 entidades: Usuario, Categoria, Producto, Proveedor, Cliente, Compra, DetalleCompra, Venta, DetalleVenta, Parametro]}\vspace{4cm}}}
+\caption{Diagrama lógico de la base de datos ProFact}
+\end{figure}
+
+% ── Anexo H — Diagrama de Casos de Uso ───────────────────────
+\chapter{Diagrama de Casos de Uso}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{4cm}\textit{[Insertar imagen: Diagrama UML de casos de uso con los actores Administrador y Empleado, y los casos de uso principales de cada módulo: Autenticación, Inventario, Compras, Ventas, Reportes, Configuración]}\vspace{4cm}}}
+\caption{Diagrama de casos de uso del sistema ProFact}
+\end{figure}
+
+% ── Anexo I — Evidencias del Desarrollo ──────────────────────
+\chapter{Evidencias del Desarrollo}
+
+\section*{Sprint 1 --- Autenticación}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- Login del sistema funcionando en el navegador]}\vspace{3cm}}}
+\caption{Evidencia Sprint 1: Pantalla de login}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- CRUD de usuarios funcionando]}\vspace{3cm}}}
+\caption{Evidencia Sprint 1: Gestión de usuarios}
+\end{figure}
+
+\section*{Sprint 2 --- Inventario}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- Listado de productos con alertas de stock bajo]}\vspace{3cm}}}
+\caption{Evidencia Sprint 2: Inventario con alertas}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- Gestión de proveedores]}\vspace{3cm}}}
+\caption{Evidencia Sprint 2: Proveedores}
+\end{figure}
+
+\section*{Sprint 3 --- Compras}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- Registro de compra con precios duales]}\vspace{3cm}}}
+\caption{Evidencia Sprint 3: Registro de compra}
+\end{figure}
+
+\section*{Sprint 4 --- Ventas y Reportes}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- Registro de venta y factura PDF]}\vspace{3cm}}}
+\caption{Evidencia Sprint 4: Ventas y factura PDF}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{3cm}\textit{[Insertar imagen: Captura --- Dashboard de reportes con gráficos]}\vspace{3cm}}}
+\caption{Evidencia Sprint 4: Dashboard de reportes}
+\end{figure}
+
+% ── Anexo J — Casos de Prueba Completos ──────────────────────
+\chapter{Casos de Prueba}
+
+Los casos de prueba detallados (PF-001 a PF-005, PV-001 a PV-005, PA-001 y PA-002) se presentan en el Capítulo 6 (Resultados, sección 6.3).
+
+% ── Anexo K — Manual de Usuario ──────────────────────────────
+\chapter{Manual de Usuario}
+
+\section*{1. Inicio de Sesión}
+Acceda a la URL del sistema e ingrese su correo electrónico y contraseña. Haga clic en ``Ingresar''. El sistema le redirigirá automáticamente al dashboard correspondiente a su rol.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Pantalla de login]}\vspace{2cm}}}
+\caption{Manual: Inicio de sesión}
+\end{figure}
+
+\section*{2. Dashboard Principal}
+El dashboard muestra los indicadores principales del negocio: ventas del día, ventas del mes, compras del mes y productos con stock bajo.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Dashboard principal]}\vspace{2cm}}}
+\caption{Manual: Dashboard principal}
+\end{figure}
+
+\section*{3. Gestión de Inventario}
+Desde el menú lateral, acceda a ``Inventario'' para ver, crear, editar o desactivar productos. Use el botón ``Nuevo Producto'' para agregar un artículo.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Módulo de inventario]}\vspace{2cm}}}
+\caption{Manual: Gestión de inventario}
+\end{figure}
+
+\section*{4. Registro de Compras}
+En ``Compras'', seleccione el proveedor, agregue productos con sus precios de compra y venta, y registre la orden. El stock se actualiza automáticamente.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Registro de compra]}\vspace{2cm}}}
+\caption{Manual: Registro de compras}
+\end{figure}
+
+\section*{5. Registro de Ventas}
+En ``Ventas'', seleccione el cliente, agregue productos y registre la venta. Puede generar la factura PDF haciendo clic en el ícono de PDF en el historial.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Registro de venta y generación de PDF]}\vspace{2cm}}}
+\caption{Manual: Registro de ventas}
+\end{figure}
+
+\section*{6. Reportes}
+En ``Reportes'', visualice los gráficos de ventas, compras y métricas del negocio. Use los filtros semanal, mensual y anual para ajustar el período.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Módulo de reportes]}\vspace{2cm}}}
+\caption{Manual: Reportes}
+\end{figure}
+
+\section*{7. Configuración}
+En ``Configuración'', el administrador puede modificar parámetros del sistema como el porcentaje de IVA.
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{2cm}\textit{[Insertar imagen: Manual --- Configuración del sistema]}\vspace{2cm}}}
+\caption{Manual: Configuración}
+\end{figure}
+
+% ── Anexo L — Manual Técnico ─────────────────────────────────
+\chapter{Manual Técnico}
+
+\section*{Requisitos del Sistema}
+\begin{itemize}
+    \item Java 17 (JDK)
+    \item Node.js 20+
+    \item Git
+    \item Navegador moderno (Chrome 110+ o Firefox 110+)
+\end{itemize}
+
+\section*{Instalación y Configuración del Backend}
+\begin{lstlisting}[language=bash,caption={Instalación del backend}]
+git clone https://github.com/AllenMero914/ProyectoGPS.git
+cd ProyectoGPS/backend
+./mvnw spring-boot:run
+# El servidor inicia en http://localhost:8081
+\end{lstlisting}
+
+\section*{Instalación y Configuración del Frontend}
+\begin{lstlisting}[language=bash,caption={Instalación del frontend}]
+cd ProyectoGPS/frontend
+npm install
+npm run dev
+# La aplicacion inicia en http://localhost:5173
+\end{lstlisting}
+
+\section*{Conexión a la Base de Datos}
+El archivo \texttt{application.properties} configura la conexión:
+\begin{lstlisting}[language={},caption={Configuración de base de datos}]
+spring.datasource.url=jdbc:h2:file:./data/profactdb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+\end{lstlisting}
+
+\section*{Endpoints de la API}
+
+\begin{longtable}{|l|l|p{5cm}|c|}
+\caption{Endpoints de la API REST} \\
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} & \textbf{Auth} \\ \hline
+\endfirsthead
+\hline
+\textbf{Método} & \textbf{Ruta} & \textbf{Descripción} & \textbf{Auth} \\ \hline
+\endhead
+POST & /api/auth/login & Iniciar sesión & No \\ \hline
+POST & /api/auth/logout & Cerrar sesión & Sí \\ \hline
+GET & /api/usuarios & Listar usuarios & ADMIN \\ \hline
+POST & /api/usuarios & Crear usuario & ADMIN \\ \hline
+PUT & /api/usuarios/\{id\} & Editar usuario & ADMIN \\ \hline
+PATCH & /api/usuarios/\{id\}/estado & Cambiar estado & ADMIN \\ \hline
+GET & /api/categorias & Listar categorías & Sí \\ \hline
+POST & /api/categorias & Crear categoría & ADMIN \\ \hline
+PUT & /api/categorias/\{id\} & Editar categoría & ADMIN \\ \hline
+DELETE & /api/categorias/\{id\} & Eliminar categoría & ADMIN \\ \hline
+GET & /api/productos & Listar productos & Sí \\ \hline
+GET & /api/productos/stock-bajo & Productos con stock bajo & Sí \\ \hline
+POST & /api/productos & Crear producto & ADMIN \\ \hline
+PUT & /api/productos/\{id\} & Editar producto & ADMIN \\ \hline
+DELETE & /api/productos/\{id\} & Eliminar producto & ADMIN \\ \hline
+GET & /api/proveedores & Listar proveedores & ADMIN \\ \hline
+POST & /api/proveedores & Crear proveedor & ADMIN \\ \hline
+GET & /api/clientes & Listar clientes & Sí \\ \hline
+POST & /api/clientes & Crear cliente & Sí \\ \hline
+PUT & /api/clientes/\{id\} & Editar cliente & Sí \\ \hline
+GET & /api/compras & Listar compras & Sí \\ \hline
+POST & /api/compras & Registrar compra & Sí \\ \hline
+PUT & /api/compras/\{id\} & Editar compra & ADMIN \\ \hline
+GET & /api/ventas & Listar ventas & Sí \\ \hline
+POST & /api/ventas & Registrar venta & Sí \\ \hline
+PUT & /api/ventas/\{id\} & Editar venta & ADMIN \\ \hline
+GET & /api/dashboard/metricas & Métricas del dashboard & Sí \\ \hline
+GET & /api/reportes/ventas-mensuales & Ventas mensuales & ADMIN \\ \hline
+GET & /api/reportes/compras-mensuales & Compras mensuales & ADMIN \\ \hline
+GET & /api/reportes/productos-mas-vendidos & Top productos & ADMIN \\ \hline
+GET & /api/reportes/resumen-financiero & Resumen financiero & ADMIN \\ \hline
+GET & /api/parametros & Listar parámetros & Sí \\ \hline
+PUT & /api/parametros/\{clave\} & Actualizar parámetro & ADMIN \\ \hline
+\end{longtable}
+
+
+% ============================================================
+\end{document}
+% ============================================================
