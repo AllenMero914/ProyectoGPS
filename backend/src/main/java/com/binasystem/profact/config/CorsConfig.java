@@ -8,14 +8,19 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-// Permite comunicación Frontend (5173) → Backend (8080)
+import org.springframework.beans.factory.annotation.Value;
+
+// Permite comunicación Frontend → Backend
 @Configuration
 public class CorsConfig {
+
+    @Value("${FRONTEND_URL:http://localhost:5173}")
+    private String frontendUrl;
 
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", frontendUrl));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization"));
