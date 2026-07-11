@@ -58,7 +58,8 @@ class VentaServiceTest {
 
         VentaRequestDTO dto = new VentaRequestDTO(
             1L,
-            List.of(new DetalleVentaDTO(1L, 3))
+            List.of(new DetalleVentaDTO(1L, 3)),
+            false
         );
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(vendedor));
@@ -85,7 +86,8 @@ class VentaServiceTest {
 
         VentaRequestDTO dto = new VentaRequestDTO(
             1L,
-            List.of(new DetalleVentaDTO(1L, 5))
+            List.of(new DetalleVentaDTO(1L, 5)),
+            false
         );
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(vendedor));
@@ -110,7 +112,7 @@ class VentaServiceTest {
         VentaRequestDTO dto = new VentaRequestDTO(1L, List.of(
             new DetalleVentaDTO(1L, 3),
             new DetalleVentaDTO(2L, 2)
-        ));
+        ), false);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(vendedor));
         when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
