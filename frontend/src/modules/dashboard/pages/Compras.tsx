@@ -27,7 +27,7 @@ export const Compras: React.FC = () => {
   const [categorias, setCategorias] = useState<CategoriaDTO[]>([]);
   
   const [proveedorId, setProveedorId] = useState('');
-  const [detalles, setDetalles] = useState<{ productoId: string; cantidad: string; precio: string; precioVenta: string }>([
+  const [detalles, setDetalles] = useState<{ productoId: string; cantidad: string; precio: string; precioVenta: string }[]>([
     { productoId: '', cantidad: '1', precio: '', precioVenta: '' },
   ]);
   const [submitting, setSubmitting] = useState(false);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from '../../../core/context/AuthContext';
 import adminAvatar from '../../../assets/dashboard-images/global-admin-icon-color-outline-vector.jpg';
 

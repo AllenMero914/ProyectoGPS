@@ -12,7 +12,6 @@ interface ParametroDTO {
 
 export const Configuracion: React.FC = () => {
   const { user } = useAuth();
-  const [parametros, setParametros] = useState<ParametroDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -22,7 +21,6 @@ export const Configuracion: React.FC = () => {
   const loadData = async () => {
     try {
       const data = await api.get<ParametroDTO[]>('/parametros');
-      setParametros(data);
       
       const ivaParam = data.find(p => p.clave === 'IVA');
       if (ivaParam) {

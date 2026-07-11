@@ -4,7 +4,7 @@ import { Modal } from '../../../core/components/Modal';
 import { api } from '../../../core/api/api';
 import type { VentaDTO, ProductoDTO, ClienteDTO } from '../../../core/api/api';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+
 import logoProFact from '../../../assets/images/logoProFact.png';
 
 export const Ventas: React.FC = () => {

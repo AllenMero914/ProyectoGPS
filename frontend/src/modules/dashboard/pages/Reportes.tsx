@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Topbar } from '../components/Topbar';
+
 import { api } from '../../../core/api/api';
 import type { DashboardMetricas, VentaDTO, CompraDTO } from '../../../core/api/api';
 import { 
@@ -24,26 +24,21 @@ export const Reportes: React.FC = () => {
     );
   }
 
-  const [metricas, setMetricas] = useState<DashboardMetricas | null>(null);
   const [ventas, setVentas] = useState<VentaDTO[]>([]);
   const [compras, setCompras] = useState<CompraDTO[]>([]);
-  const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState<'SEMANAL' | 'MENSUAL' | 'ANUAL'>('MENSUAL');
 
   const load = async () => {
     try {
-      const [m, v, c] = await Promise.all([
-        api.get<DashboardMetricas>('/dashboard/metricas'),
+      const [v, c] = await Promise.all([
         api.get<VentaDTO[]>('/ventas'),
         api.get<CompraDTO[]>('/compras'),
       ]);
-      setMetricas(m);
       setVentas(v);
       setCompras(c);
     } catch (error) {
       console.error('Error cargando reportes:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error cargando reportes:', error);
     }
   };
 
@@ -65,7 +60,6 @@ export const Reportes: React.FC = () => {
         const week = getWeek(d);
         key = `${year}-W${week}`;
         const inicio = startOfWeek(d, { weekStartsOn: 1 });
-        const fin = endOfWeek(d, { weekStartsOn: 1 });
         label = `${format(inicio, 'dd MMM', { locale: es })}`;
         orden = d.getTime(); 
       } else if (filtro === 'MENSUAL') {
@@ -252,7 +246,7 @@ export const Reportes: React.FC = () => {
             <ResponsiveContainer>
               <PieChart>
                 <Pie data={pieData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value" stroke="none">
-                  {pieData.map((entry, index) => (
+                  {pieData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
                   ))}
                 </Pie>
